@@ -16,6 +16,7 @@ app.use(
   }),
 );
 
+import {errorMiddleware} from "./middlewares/error.middleware.js";
 import healthCheckRouter from "./routes/healthcheck.routes.js";
 import authRouter from "./routes/auth.routes.js";
 
@@ -23,9 +24,8 @@ app.use("/api/v1/auth", authRouter);
 
 app.use("/api/v1/healthcheck", healthCheckRouter);
 
-
 app.get("/", (req, res) => {
   res.send("Welcome to Room Rental Application");
 });
-
+app.use(errorMiddleware);
 export default app;
