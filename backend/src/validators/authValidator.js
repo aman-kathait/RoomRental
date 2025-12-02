@@ -32,3 +32,13 @@ export const userRegisterValidator =  [
       .withMessage("Contact number must be exactly 10 digits long.")
 ];
 
+export const userLoginValidator = [
+    body("email")
+      .isEmail()
+      .withMessage("Please provide a valid email address.")
+      .notEmpty()
+      .withMessage("Email field cannot be empty."),
+    body("password")
+      .notEmpty()
+      .withMessage("Password field cannot be empty.")
+];
