@@ -1,8 +1,9 @@
 import User from "../models/user.models.js";
+import UserOtp from "../models/userotp.models.js"
 import { ApiResponse } from "../utils/api-response.js";
 import { ApiError } from "../utils/api-error.js";
 import { asyncHandler } from "../utils/async-handler.js";
-import { sendEmail, emailVerificationContent } from "../utils/mail.js";
+import { sendEmail, emailVerificationContent, forgotPasswordContent } from "../utils/mail.js";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
 
@@ -257,6 +258,50 @@ export const forgotPassword=asyncHandler(async(req,res)=>{
     throw new ApiError(400,"Email is required");
   }
   const user=await User.findOne({email});
+  const otp=Math.floor(100000 + Math.random() * 900000).toString();
+  await UserOtp.deleteMany({ userId: user._id });
+  await UserOtp.create({
+    userId: user._id,
+    otp
+  });
+   await sendEmail({
+    email: user.email,
+    subject: "Forgot Password OTP",
+    mailgenContent: forgotPasswordContent(
+      user.fullName,
+      otp
+    ),
+  });
+  return res.status(200).json(new ApiResponse(200, {}, "OTP sent to email successfully"));
+});
+
+export const verifyForgotPasswordOtp=asyncHandler(async(req,res)=>{
+  const {email,otp}=req.body;
+  if(!email || !otp ){
+    throw new ApiError(400,"All fields are required");
+  }
+  const user=await User.findOne({email});
+  const userOtp=await UserOtp.findOne({userId:user._id,otp});
+  if(!userOtp){
+    throw new ApiError(400,"Invalid OTP");
+  }
+  return res.status(200).json(new ApiResponse(200, {}, "OTP verified successfully"));
+});
+
+export const resetPassword=asyncHandler(async(req,res)=>{
+  const {email,otp,newPassword}=req.body;
+  if(!email || !otp || !newPassword){
+    throw new ApiError(400,"All fields are required");
+  }
+  const user=await User.findOne({email});
+  const userOtp=await UserOtp.findOne({userId:user._id,otp});
+  if(!userOtp){
+    throw new ApiError(400,"OTP expired or invalid");
+  }
+  user.password=newPassword;
+  await user.save({ validateBeforeSave: false });
+  await UserOtp.deleteMany({ userId: user._id });
+  return res.status(200).json(new ApiResponse(200, {}, "Password reset successfully"));
 });
 
 export const changePassword=asyncHandler(async(req,res)=>{

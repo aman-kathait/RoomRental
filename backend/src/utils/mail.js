@@ -56,18 +56,18 @@ const emailVerificationContent = (username, verificationUrl) => {
   };
 };
 
-const forgotPasswordContent = (username, passwordResetUrl) => {
+const forgotPasswordContent = (username, otp) => {
   return {
     body: {
       name: username,
       intro: "You have requested to reset your password.",
-      action: {
-        instructions: "To reset your password, please click here:",
-        button: {
-          color: "#2d53fbff",
-          text: "Reset your password",
-          link: passwordResetUrl,
-        },
+       table: {
+        data: [
+          {
+            "Your OTP": otp,
+            "Expires in": "5 minutes",
+          },
+        ],
       },
       outro:
         "Need help, or have questions? Just reply to this email, we'd love to help.",
