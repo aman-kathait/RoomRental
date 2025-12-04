@@ -27,3 +27,10 @@ export const verifyJWT=asyncHandler(async(req,res,next)=>{
     }
 
 });
+
+export const isLandlord=asyncHandler(async(req,res,next)=>{
+    if(req.user.role !== "landlord"){
+        throw new ApiError(403,"Forbidden access, Landlord role required");
+    }
+    next();
+});
