@@ -9,11 +9,11 @@ const userSchema = new Schema(
     avatar: {
       type: {
         url: String,
-        localPath: String,
+        public_id: String,
       },
       default: {
         url: `https://placehold.co/200x200`,
-        localPath: "",
+        public_id: "",
       },
     },
     email: {

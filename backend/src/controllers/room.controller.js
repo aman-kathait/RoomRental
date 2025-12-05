@@ -66,16 +66,87 @@ export const getMyRooms = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, { myrooms }, "My Rooms Fetched successfully"));
 });
 
-export const findRoomById=asyncHandler(async(req,res)=>{
-    const roomId=req.params.id;
-    const room=await Room.findById(roomId).populate(
-      "owner",
-      "name email fullName contactNumber",
-    );
-    if(!room){
-        throw new ApiError(404, "Room not found");
-    }
-    res
+export const findRoomById = asyncHandler(async (req, res) => {
+  const roomId = req.params.id;
+  const room = await Room.findById(roomId).populate(
+    "owner",
+    "name email fullName contactNumber",
+  );
+  if (!room) {
+    throw new ApiError(404, "Room not found");
+  }
+  res
     .status(200)
     .json(new ApiResponse(200, { room }, "Room Fetched successfully"));
 });
+
+export const editRoomDetails = asyncHandler(async (req, res) => {
+  const roomId = req.params.id;
+  const room = await Room.findById(roomId);
+
+  if (!room) {
+    throw new ApiError(404, "No Room find");
+  }
+
+  if (room.owner.toString() !== req.user._id.toString()) {
+    throw new ApiError(403, "Not authorized to edit this room");
+  }
+
+  const { propertyName, description, price, address, amenities } = req.body;
+
+  const updatedData = {
+    propertyName: propertyName?.trim() || room.propertyName,
+    description: description?.trim() || room.description,
+    price: price ?? room.price,
+    amenities: amenities || room.amenities,
+    address: {
+      addressLine1: address?.addressLine1?.trim() || room.address.addressLine1,
+      city: address?.city?.trim() || room.address.city,
+      state: address?.state?.trim() || room.address.state,
+      country: address?.country?.trim() || room.address.country,
+      pincode: address?.pincode || room.address.pincode,
+      landmark: address?.landmark?.trim() || room.address.landmark,
+  }};
+  const updatedRoom=await Room.findByIdAndUpdate(roomId,updatedData,{new:true,runValidators:true});
+  if (!updatedRoom) throw new ApiError(500, "Failed to update room");
+
+  res.status(200)
+    .json(new ApiResponse(200,{updatedRoom},"Room Updated Successfully"));
+});
+
+export const deleteRoomById = asyncHandler(async (req, res) => {
+  const roomId=req.params.id;
+  const room=await Room.findById(roomId);
+  if(!room){
+    throw new ApiError(404,"Room not found");
+  }
+
+  if (room.owner.toString() !== req.user._id.toString()) {
+    throw new ApiError(403, "Not authorized to delete this room");
+  }
+  await Room.findByIdAndDelete(roomId);
+
+ res.status(200)
+    .json(new ApiResponse(200,{},"Room Deleted Successfully"));
+
+});
+
+export const updateRoomStatus = asyncHandler(async (req, res) => {
+  const roomId = req.params.id;
+  const { isAvailable } = req.body;
+
+  const room = await Room.findById(roomId);
+  if (!room) {
+    throw new ApiError(404, "Room not found");
+  }
+  if (room.owner.toString() !== req.user._id.toString()) {
+    throw new ApiError(403, "Not authorized to update this room");
+  }
+  room.isAvailable = isAvailable;
+  await room.save();
+  res
+    .status(200)
+    .json(new ApiResponse(200, { room }, "Room status updated successfully"));
+});
+
+export const editRoomImages = asyncHandler(async (req, res) => {});

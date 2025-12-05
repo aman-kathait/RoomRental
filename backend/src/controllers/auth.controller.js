@@ -318,3 +318,23 @@ export const changePassword=asyncHandler(async(req,res)=>{
   await user.save({ validateBeforeSave: false });
   return res.status(200).json(new ApiResponse(200, {}, "Password changed successfully"));
 });
+
+export const updateProfile=asyncHandler(async(req,res)=>{
+  const {avatar,fullName,contactNumber}=req.body;
+  const userId=req.params.id;
+  const user=await User.findById(userId);
+  if(!user){
+    throw new ApiError(404,"User not found");
+  }
+  if(req.user._id.toString()!==userId){
+    throw new ApiError(403,"Unauthorized to update this profile");
+  }
+  const updatedData={
+    avatar:avatar?.trim() || user.avatar,
+    fullName:fullName?.trim() || user.fullName,
+    contactNumber:contactNumber?.trim() || user.contactNumber,
+  }
+
+  const updatedUser=await User.findByIdAndUpdate(userId,updatedData,{new:true,runValidators:true});
+  res.status(200).json(new ApiResponse(200, { updatedUser }, "Profile updated successfully"));
+});
