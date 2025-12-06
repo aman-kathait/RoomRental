@@ -7,15 +7,14 @@ const roomInquirySchema = new Schema({
         ref: "Room",
         required: true
     },
-    owner:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true
-    },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true
+    },owner: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: "User", 
+        required: true 
     },
     status: {
         type: String,

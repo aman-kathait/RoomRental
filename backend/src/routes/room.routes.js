@@ -1,12 +1,12 @@
 import Router from 'express';
-import {verifyJWT,isLandlord} from '../middlewares/auth.middleware.js';
+import {verifyJWT,isLandlord,isTenant } from '../middlewares/auth.middleware.js';
 import {addRoom,getAllRooms, getMyRooms,findRoomById,editRoomDetails,deleteRoomById,updateRoomStatus} from '../controllers/room.controller.js';
 
 const router=Router();
 
 router.route("/add-room").post(verifyJWT, isLandlord, addRoom);
 router.route("/get-all-rooms").get(verifyJWT, getAllRooms);
-router.route("/get-my-rooms").get(verifyJWT, getMyRooms);
+router.route("/get-my-rooms").get(verifyJWT,isLandlord, getMyRooms);
 router.route("/get-room/:id").get(verifyJWT, findRoomById);
 router.route("/edit-room/:id").put(verifyJWT, isLandlord, editRoomDetails);
 router.route("/delete-room/:id").delete(verifyJWT, isLandlord, deleteRoomById);

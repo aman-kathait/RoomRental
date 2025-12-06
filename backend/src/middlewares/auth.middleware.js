@@ -34,3 +34,10 @@ export const isLandlord=asyncHandler(async(req,res,next)=>{
     }
     next();
 });
+
+export const isTenant=asyncHandler(async(req,res,next)=>{
+    if(req.user.role!=="tenant"){
+        throw new ApiError(403,"Forbidden access,Tenant role required");
+    }
+    next();
+});

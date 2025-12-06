@@ -20,10 +20,11 @@ import {errorMiddleware} from "./middlewares/error.middleware.js";
 import healthCheckRouter from "./routes/healthcheck.routes.js";
 import authRouter from "./routes/auth.routes.js";
 import roomRouter from "./routes/room.routes.js";
+import inquiryRouter from "./routes/inquiry.routes.js";
 
 app.use("/api/v1/rooms", roomRouter);
 app.use("/api/v1/auth", authRouter);
-
+app.use("/api/v1/inquiries",inquiryRouter);
 app.use("/api/v1/healthcheck", healthCheckRouter);
 
 app.get("/", (req, res) => {
