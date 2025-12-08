@@ -5,8 +5,19 @@ import Room from "../models/room.models.js";
 import User from "../models/user.models.js";
 
 export const addRoom = asyncHandler(async (req, res) => {
-  const { propertyName, description, price, address, images, amenities } =
-    req.body;
+  const { propertyName, description, price, address, amenities } = req.body;
+
+  const images =
+    req.files?.map((file) => ({
+      url: file.path,
+      public_id: file.filename,
+    })) || [];
+  if (images.length === 0) {
+    throw new ApiError(400, "At least one image is required");
+  }
+  if (images.length > 3) {
+    throw new ApiError(400, "Maximum 3 images are allowed");
+  }
 
   if (!propertyName || !description || !price || !address) {
     throw new ApiError(400, "Missing required fields");
@@ -14,10 +25,6 @@ export const addRoom = asyncHandler(async (req, res) => {
 
   if (!address.city || !address.pincode) {
     throw new ApiError(400, "City and pincode are required in the address");
-  }
-
-  if (!images || !Array.isArray(images) || images.length === 0) {
-    throw new ApiError(400, "At least one image is required");
   }
 
   const ownerId = req.user?._id;
@@ -106,19 +113,24 @@ export const editRoomDetails = asyncHandler(async (req, res) => {
       country: address?.country?.trim() || room.address.country,
       pincode: address?.pincode || room.address.pincode,
       landmark: address?.landmark?.trim() || room.address.landmark,
-  }};
-  const updatedRoom=await Room.findByIdAndUpdate(roomId,updatedData,{new:true,runValidators:true});
+    },
+  };
+  const updatedRoom = await Room.findByIdAndUpdate(roomId, updatedData, {
+    new: true,
+    runValidators: true,
+  });
   if (!updatedRoom) throw new ApiError(500, "Failed to update room");
 
-  res.status(200)
-    .json(new ApiResponse(200,{updatedRoom},"Room Updated Successfully"));
+  res
+    .status(200)
+    .json(new ApiResponse(200, { updatedRoom }, "Room Updated Successfully"));
 });
 
 export const deleteRoomById = asyncHandler(async (req, res) => {
-  const roomId=req.params.id;
-  const room=await Room.findById(roomId);
-  if(!room){
-    throw new ApiError(404,"Room not found");
+  const roomId = req.params.id;
+  const room = await Room.findById(roomId);
+  if (!room) {
+    throw new ApiError(404, "Room not found");
   }
 
   if (room.owner.toString() !== req.user._id.toString()) {
@@ -126,9 +138,7 @@ export const deleteRoomById = asyncHandler(async (req, res) => {
   }
   await Room.findByIdAndDelete(roomId);
 
- res.status(200)
-    .json(new ApiResponse(200,{},"Room Deleted Successfully"));
-
+  res.status(200).json(new ApiResponse(200, {}, "Room Deleted Successfully"));
 });
 
 export const updateRoomStatus = asyncHandler(async (req, res) => {
