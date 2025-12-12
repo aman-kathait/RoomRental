@@ -70,7 +70,7 @@ const Signup = () => {
               placeholder="Full Name"
               value={formData.fullName}
               onChange={handleChange}
-              className="border p-2 rounded-md border-gray-300 shadow-sm w-full text-sm "
+              className="mt-1"
             />
             <Input
               type="email"
@@ -78,7 +78,7 @@ const Signup = () => {
               placeholder="Enter your Email"
               value={formData.email}
               onChange={handleChange}
-              className="border p-2 rounded-md border-gray-300 shadow-sm w-full text-sm  items-center"
+              className="mt-1"
             />
             <Input
               type="text"
@@ -86,7 +86,7 @@ const Signup = () => {
               placeholder="Enter your Phone Number"
               value={formData.contactNumber}
               onChange={handleChange}
-              className="border p-2 rounded-md border-gray-300 shadow-sm w-full text-sm "
+              className="mt-1"
             />
             <Input
               type="password"
@@ -94,7 +94,7 @@ const Signup = () => {
               placeholder="Enter your password"
               value={formData.password}
               onChange={handleChange}
-              className="border p-2 rounded-md border-gray-300 shadow-sm w-full text-sm "
+              className="mt-1"
             />
           </div>
           <div className="flex flex-row  items-center">

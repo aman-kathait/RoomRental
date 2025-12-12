@@ -64,7 +64,7 @@ const Login = () => {
               placeholder="Enter your email"
               value={formData.email}
               onChange={handleChange}
-              className="border p-2 rounded-md border-gray-300 shadow-sm w-full text-sm  items-center mb-4 mt-1"
+              className="mt-1"
             />
             <Label htmlFor="password">Password</Label>
             <Input
@@ -73,10 +73,10 @@ const Login = () => {
               placeholder="Enter your password"
               value={formData.password}
               onChange={handleChange}
-              className="border p-2 rounded-md border-gray-300 shadow-sm w-full text-sm  items-center mt-1"
+              className="mt-1"
             />
             {backendErrors.length > 0 && (
-              <div className="mt-3 text-sm text-red-500 space-y-1">
+              <div className="mt-3 text-xs md:text-sm text-red-500 space-y-1">
                 <ul className="list-disc list-inside">
                   {backendErrors.map((err, idx) => (
                     <li key={idx}>{err}</li>
