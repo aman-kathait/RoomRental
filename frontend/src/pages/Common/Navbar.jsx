@@ -1,12 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
   return (
-    <div className="bg-background flex justify-between items-center px-4 sm:px-18 py-3">
+    <div
+      className={`
+    fixed top-0 left-0 w-full z-50
+    flex justify-between items-center
+    px-4 sm:px-8 lg:px-20 py-3
+    transition-all duration-300 shadow-md
+    ${
+      scrolled ? "bg-background/70 backdrop-blur-md shadow-lg" : "bg-background"
+    }
+  `}
+    >
       <div className="font-bold text-2xl text-primary tracking-wide">
-        RentEasy
+        <span className="text-black">Rent</span>Easy
       </div>
 
       <ul className="hidden md:flex items-center gap-10 text-gray-700 font-medium">
