@@ -6,7 +6,7 @@
 @theme{
     --font-display:"Poppins","sans-serif";
     --breakpoint-3xl:1920px;
-    --color-primary:#875cf5;
+    --color-primary:#0284C7;
 }
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
@@ -85,7 +85,7 @@
   --radius: 0.625rem;
 
   /* BRAND COLORS */
-  --primary: #875cf5;
+  --primary: #0284C7;
   --primary-foreground: #ffffff;
 
   /* BACKGROUND & TEXT */

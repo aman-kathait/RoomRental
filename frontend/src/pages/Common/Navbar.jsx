@@ -16,9 +16,9 @@ const Navbar = () => {
   return (
     <div
       className={`
-    fixed top-0 left-0 w-full z-50
+    fixed top-0 left-0 w-full z-50 bg-white
     flex justify-between items-center
-    px-4 sm:px-8 lg:px-20 py-3
+    px-4 sm:px-8 lg:px-30 py-3
     transition-all duration-300 shadow-md
     ${
       scrolled ? "bg-background/70 backdrop-blur-md shadow-lg" : "bg-background"
@@ -29,7 +29,7 @@ const Navbar = () => {
         <span className="text-black">Rent</span>Easy
       </div>
 
-      <ul className="hidden md:flex items-center gap-10 text-gray-700 font-medium">
+      <ul className="hidden md:flex items-center gap-10 text-gray-900 font-medium">
         <li className="hover:text-primary transition">
           <Link to="/">Home</Link>
         </li>

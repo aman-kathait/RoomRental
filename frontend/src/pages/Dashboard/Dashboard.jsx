@@ -6,8 +6,9 @@ const Dashboard = () => {
   return (
     <div className='md:mt-16'>
       <Herosection />
-      <Rooms />
       <Ourcoverage />
+      <Rooms />
+      
     </div>
   )
 }
