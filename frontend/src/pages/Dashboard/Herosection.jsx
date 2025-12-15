@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
+
 const Herosection = () => {
   return (
-    <div
-      className="flex flex-col-reverse md:flex-row md:justify-around md:pt-25 md:px-30 bg-[#F1F9FF] md:pb-30">
+    <div className="flex flex-col-reverse md:flex-row md:justify-around md:pt-25 md:px-30 bg-linear-to-b from-[#F1F9FF] via-[#F1F9FF] to-white md:pb-30">
       <div className="md:w-1/2 md:space-y-2">
         <h1 className="text-[#1E293B] text-center md:text-left text-2xl md:text-6xl font-bold mt-6 md:mt-0">
           Real People,
