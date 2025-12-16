@@ -1,11 +1,224 @@
-import React from 'react'
+import React, { useState } from "react";
+import { cities } from "@/utils/constants";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import RoomCard from "./RoomCard";
 
 const Rooms = () => {
-  return (
-    <div className='mt-16'>
-      All Rooms Page Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus id dignissimos accusantium tempore, rem fugit, aspernatur cum quas necessitatibus reprehenderit ab nemo ad placeat sunt, voluptate asperiores laudantium minus autem voluptas nihil. Unde aut dolor, necessitatibus, accusantium et ducimus aperiam nisi quaerat ea illum esse rem eius voluptates. Doloribus quia corporis iste tenetur inventore nulla? Molestiae praesentium sit perferendis dolorum tempore, odit minima corrupti saepe ducimus animi eius expedita, laborum est minus iusto voluptates totam esse, inventore repudiandae recusandae officia autem commodi? Voluptatum magnam sunt alias modi non earum reiciendis, fuga voluptate dolor impedit quo sit numquam. Animi, nobis quo?
-    </div>
-  )
-}
+  const rooms = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const [showFilter, setShowFilter] = useState(false);
 
-export default Rooms
+  return (
+    <div className="mt-24 max-w-7xl mx-auto px-4 mb-20 lg:grid lg:grid-cols-12 lg:gap-6 items-start">
+
+      {/* ================= Desktop Filter Sidebar ================= */}
+      <aside className="hidden lg:block col-span-3 sticky top-24 h-fit">
+        <div className="bg-white shadow-lg rounded-2xl p-6 space-y-6">
+
+          <h2 className="text-xl font-bold text-slate-800">
+            Filter Rooms
+          </h2>
+
+          {/* Location */}
+          <div>
+            <h3 className="text-lg font-semibold text-slate-700 mb-2">
+              Location
+            </h3>
+            <Select>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select city" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Cities</SelectLabel>
+                  {cities.map((city) => (
+                    <SelectItem key={city} value={city}>
+                      {city}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Price */}
+          <div>
+            <h3 className="text-lg font-semibold text-slate-700 mb-2">
+              Price Range
+            </h3>
+            <RadioGroup className="space-y-2">
+              <div className="flex items-center gap-2">
+                <RadioGroupItem value="0-5000" id="p1" />
+                <Label htmlFor="p1">₹0 - ₹5,000</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <RadioGroupItem value="5000-10000" id="p2" />
+                <Label htmlFor="p2">₹5,000 - ₹10,000</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <RadioGroupItem value="10000+" id="p3" />
+                <Label htmlFor="p3">₹10,000+</Label>
+              </div>
+            </RadioGroup>
+          </div>
+
+          {/* Amenities */}
+          <div>
+            <h3 className="text-lg font-semibold text-slate-700 mb-2">
+              Amenities
+            </h3>
+            <div className="space-y-2">
+              {["WiFi", "Parking", "AC", "Geyser"].map((amenity) => (
+                <div key={amenity} className="flex items-center gap-2">
+                  <Checkbox id={amenity} />
+                  <Label htmlFor={amenity}>{amenity}</Label>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Buttons */}
+          <div className="space-y-2">
+            <button className="w-full bg-primary text-white rounded-xl px-4 py-3 font-semibold hover:bg-primary/90 transition">
+              Apply Filters
+            </button>
+            <button className="w-full bg-slate-100 text-slate-700 rounded-xl px-4 py-3 font-semibold hover:bg-slate-200 transition">
+              Clear All
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      {/* ================= Rooms Section ================= */}
+      <main className="lg:col-span-9">
+
+        {/* Mobile Filter Button */}
+        <div className="lg:hidden mb-4">
+          <button
+            onClick={() => setShowFilter(true)}
+            className="w-full bg-white border rounded-xl px-4 py-3 shadow-sm font-semibold text-slate-700"
+          >
+            Filters
+          </button>
+        </div>
+
+        <h2 className="text-2xl md:text-3xl font-bold text-slate-800 mb-6">
+          Available Rooms
+        </h2>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+          {rooms.map((room) => (
+            <RoomCard key={room} />
+          ))}
+        </div>
+      </main>
+
+      {/* ================= Mobile Filter Drawer ================= */}
+      {showFilter && (
+        <div className="fixed inset-0 z-50 bg-black/40 flex items-end lg:hidden">
+          <div className="w-full bg-white rounded-t-3xl p-6 max-h-[85vh] overflow-y-auto animate-in slide-in-from-bottom">
+
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold text-slate-800">
+                Filter Rooms
+              </h2>
+              <button
+                onClick={() => setShowFilter(false)}
+                className="text-slate-500 font-semibold"
+              >
+                Close
+              </button>
+            </div>
+
+            <div className="space-y-6">
+
+              {/* Location */}
+              <div>
+                <h3 className="text-lg font-semibold text-slate-700 mb-2">
+                  Location
+                </h3>
+                <Select>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select city" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Cities</SelectLabel>
+                      {cities.map((city) => (
+                        <SelectItem key={city} value={city}>
+                          {city}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Price */}
+              <div>
+                <h3 className="text-lg font-semibold text-slate-700 mb-2">
+                  Price Range
+                </h3>
+                <RadioGroup className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <RadioGroupItem value="0-5000" id="m1" />
+                    <Label htmlFor="m1">₹0 - ₹5,000</Label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <RadioGroupItem value="5000-10000" id="m2" />
+                    <Label htmlFor="m2">₹5,000 - ₹10,000</Label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <RadioGroupItem value="10000+" id="m3" />
+                    <Label htmlFor="m3">₹10,000+</Label>
+                  </div>
+                </RadioGroup>
+              </div>
+
+              {/* Amenities */}
+              <div>
+                <h3 className="text-lg font-semibold text-slate-700 mb-2">
+                  Amenities
+                </h3>
+                <div className="space-y-2">
+                  {["WiFi", "Parking", "AC", "Geyser"].map((amenity) => (
+                    <div key={amenity} className="flex items-center gap-2">
+                      <Checkbox id={`m-${amenity}`} />
+                      <Label htmlFor={`m-${amenity}`}>{amenity}</Label>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Buttons */}
+              <div className="space-y-2">
+                <button
+                  onClick={() => setShowFilter(false)}
+                  className="w-full bg-primary text-white rounded-xl px-4 py-3 font-semibold"
+                >
+                  Apply Filters
+                </button>
+                <button className="w-full bg-slate-100 text-slate-700 rounded-xl px-4 py-3 font-semibold">
+                  Clear All
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Rooms;

@@ -1,1 +1,41 @@
-export const USER_API_END_POINT="http://localhost:8000/api/v1/auth"
+export const USER_API_END_POINT = "http://localhost:8000/api/v1/auth";
+
+export const cities = [
+  "Dehradun",
+  "Haridwar",
+  "Roorkee",
+  "Haldwani",
+  "Rudrapur",
+  "Kashipur",
+  "Rishikesh",
+  "Kotdwar",
+  "Nainital",
+  "Almora",
+  "Mussoorie",
+  "Pithoragarh",
+  "Ramnagar",
+  "Srinagar",
+  "New Tehri",
+  "Pauri",
+  "Uttarkashi",
+  "Kichha",
+  "Khatima",
+  "Sitarganj",
+  "Jaspur",
+  "Manglaur",
+  "Bageshwar",
+  "Gopeshwar",
+  "Joshimath",
+  "Rudraprayag",
+  "Champawat",
+  "Tanakpur",
+  "Ranikhet",
+  "Vikasnagar",
+];
+
+export const AMENITIES = [
+  "WiFi",
+  "Parking",
+  "Air Conditioning",
+  "Gyser",
+];

@@ -34,7 +34,7 @@ const Navbar = () => {
           <Link to="/">Home</Link>
         </li>
         <li className="hover:text-primary transition">
-          <Link to="/room">Room</Link>
+          <Link to="/rooms">Room</Link>
         </li>
         <li className="hover:text-primary transition">
           <Link to="/find-room">Find Room</Link>

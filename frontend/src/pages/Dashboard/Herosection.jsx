@@ -36,10 +36,10 @@ const Herosection = () => {
       <div className="md:w-1/2 mt-18 md:mt-0 px-2 md:px-0 md:pt-0 flex justify-center">
         <div className="">
           <img
-            src="Image 1.jpg"
+            src="Test1.jpg"
             alt=""
             srcset=""
-            className="rounded-xl shadow-lg px-2 h-60 md:h-100 md:px-0"
+            className="rounded-2xl shadow-xl px-2 h-60 md:h-100 md:px-0"
           />
         </div>
       </div>
