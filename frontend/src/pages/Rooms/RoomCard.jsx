@@ -5,7 +5,7 @@ const RoomCard = () => {
   return (
     <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden">
 
-      {/* Image */}
+   
       <div className="h-48 w-full">
         <img
           src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2"
@@ -14,7 +14,6 @@ const RoomCard = () => {
         />
       </div>
 
-      {/* Content */}
       <div className="p-4 space-y-2">
         <h3 className="text-lg font-semibold text-slate-800">
           Sunrise Residency

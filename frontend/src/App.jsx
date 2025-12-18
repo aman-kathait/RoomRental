@@ -4,12 +4,18 @@ import Register from "../src/pages/Auth/Signup"
 import Dashboard from "./pages/Dashboard/Dashboard"
 import Layout from "./pages/Layout"
 import Rooms from "./pages/Rooms/Rooms"
+import FindRoom from "./pages/Rooms/FindRoom"
+import RoomDetails from "./pages/Rooms/RoomDetails"
+import Profile from "./pages/Profile/Profile"
 function App() {
   return (
     <Routes>
       <Route element={<Layout />}>
       <Route path="/" element={<Dashboard />} />
       <Route path="/rooms" element={<Rooms />} />
+      <Route path="/find-room" element={<FindRoom />} />
+      <Route path="/room-details" element={<RoomDetails />} />
+      <Route path="/profile" element={<Profile />} />
        </Route>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />

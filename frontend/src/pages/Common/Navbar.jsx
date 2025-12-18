@@ -40,7 +40,7 @@ const Navbar = () => {
           <Link to="/find-room">Find Room</Link>
         </li>
         <li className="hover:text-primary transition">
-          <Link to="/contact-us">Contact Us</Link>
+          <Link to="/#contact">Contact Us</Link>
         </li>
       </ul>
 

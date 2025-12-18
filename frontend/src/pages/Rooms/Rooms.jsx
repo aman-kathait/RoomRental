@@ -20,16 +20,10 @@ const Rooms = () => {
 
   return (
     <div className="mt-24 max-w-7xl mx-auto px-4 mb-20 lg:grid lg:grid-cols-12 lg:gap-6 items-start">
-
-      {/* ================= Desktop Filter Sidebar ================= */}
       <aside className="hidden lg:block col-span-3 sticky top-24 h-fit">
         <div className="bg-white shadow-lg rounded-2xl p-6 space-y-6">
+          <h2 className="text-xl font-bold text-slate-800">Filter Rooms</h2>
 
-          <h2 className="text-xl font-bold text-slate-800">
-            Filter Rooms
-          </h2>
-
-          {/* Location */}
           <div>
             <h3 className="text-lg font-semibold text-slate-700 mb-2">
               Location
@@ -51,7 +45,6 @@ const Rooms = () => {
             </Select>
           </div>
 
-          {/* Price */}
           <div>
             <h3 className="text-lg font-semibold text-slate-700 mb-2">
               Price Range
@@ -72,7 +65,6 @@ const Rooms = () => {
             </RadioGroup>
           </div>
 
-          {/* Amenities */}
           <div>
             <h3 className="text-lg font-semibold text-slate-700 mb-2">
               Amenities
@@ -87,7 +79,6 @@ const Rooms = () => {
             </div>
           </div>
 
-          {/* Buttons */}
           <div className="space-y-2">
             <button className="w-full bg-primary text-white rounded-xl px-4 py-3 font-semibold hover:bg-primary/90 transition">
               Apply Filters
@@ -99,10 +90,7 @@ const Rooms = () => {
         </div>
       </aside>
 
-      {/* ================= Rooms Section ================= */}
       <main className="lg:col-span-9">
-
-        {/* Mobile Filter Button */}
         <div className="lg:hidden mb-4">
           <button
             onClick={() => setShowFilter(true)}
@@ -123,15 +111,11 @@ const Rooms = () => {
         </div>
       </main>
 
-      {/* ================= Mobile Filter Drawer ================= */}
       {showFilter && (
         <div className="fixed inset-0 z-50 bg-black/40 flex items-end lg:hidden">
           <div className="w-full bg-white rounded-t-3xl p-6 max-h-[85vh] overflow-y-auto animate-in slide-in-from-bottom">
-
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold text-slate-800">
-                Filter Rooms
-              </h2>
+              <h2 className="text-xl font-bold text-slate-800">Filter Rooms</h2>
               <button
                 onClick={() => setShowFilter(false)}
                 className="text-slate-500 font-semibold"
@@ -141,8 +125,6 @@ const Rooms = () => {
             </div>
 
             <div className="space-y-6">
-
-              {/* Location */}
               <div>
                 <h3 className="text-lg font-semibold text-slate-700 mb-2">
                   Location
@@ -164,7 +146,6 @@ const Rooms = () => {
                 </Select>
               </div>
 
-              {/* Price */}
               <div>
                 <h3 className="text-lg font-semibold text-slate-700 mb-2">
                   Price Range
@@ -185,7 +166,6 @@ const Rooms = () => {
                 </RadioGroup>
               </div>
 
-              {/* Amenities */}
               <div>
                 <h3 className="text-lg font-semibold text-slate-700 mb-2">
                   Amenities
@@ -200,7 +180,6 @@ const Rooms = () => {
                 </div>
               </div>
 
-              {/* Buttons */}
               <div className="space-y-2">
                 <button
                   onClick={() => setShowFilter(false)}
@@ -212,7 +191,6 @@ const Rooms = () => {
                   Clear All
                 </button>
               </div>
-
             </div>
           </div>
         </div>

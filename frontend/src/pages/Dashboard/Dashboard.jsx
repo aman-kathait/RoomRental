@@ -5,7 +5,7 @@ import Ourcoverage from './Ourcoverage'
 import Footer from '../Common/Footer'
 const Dashboard = () => {
   return (
-    <div className='md:mt-16'>
+    <div className='md:mt-10'>
       <Herosection />
       <Ourcoverage />
       <Rooms />
