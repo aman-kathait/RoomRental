@@ -4,10 +4,14 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { Link, useNavigate } from "react-router-dom";
-import axiosClient from "@/utils/axiosClient";
-import { USER_API_END_POINT } from "@/utils/constants";
+import { loginUser} from "@/services/authService";
+import { useDispatch } from "react-redux";
+import {login} from "../../redux/slices/authSlice.js";
+import { setUser } from "../..//redux/slices/userSlice.js";
+
 
 const Login = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [backendErrors, setBackendErrors] = useState([]);
@@ -28,12 +32,10 @@ const Login = () => {
     e.preventDefault();
     setBackendErrors([]);
     try {
-      const response = await axiosClient.post(
-        `${USER_API_END_POINT}/login`,
-        formData,
-        { withCredentials: true }
-      );
+      const response = await loginUser(formData);
       if (response.data.success) {
+        dispatch(login(response.data.data.accessToken));
+        dispatch(setUser(response.data.data.user));
         navigate("/");
         console.log(response.data);
       }

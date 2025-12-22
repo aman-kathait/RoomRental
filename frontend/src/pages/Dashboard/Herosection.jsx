@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
+import { getCurrentUser } from "@/services/authService";
 const Herosection = () => {
   return (
     <div className="flex flex-col-reverse md:flex-row md:justify-around md:pt-25 md:px-30 bg-linear-to-b from-[#F1F9FF] via-[#F1F9FF] to-white md:pb-30">

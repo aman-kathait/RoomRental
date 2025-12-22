@@ -6,7 +6,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { Link, useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import axiosClient from "@/utils/axiosClient";
-import { USER_API_END_POINT } from "@/utils/constants";
+import { registerUser } from "@/services/authService"; 
 const Signup = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -29,13 +29,7 @@ const Signup = () => {
     e.preventDefault();
     setBackendErrors([]);
     try {
-      const response = await axiosClient.post(
-        `${USER_API_END_POINT}/register`,
-        formData,
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await registerUser(formData);
       if (response.data.success) {
         navigate("/login");
       }

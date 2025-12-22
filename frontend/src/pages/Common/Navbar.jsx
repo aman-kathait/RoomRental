@@ -1,9 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
+import { useSelector,useDispatch } from "react-redux";
+import { logout } from "@/redux/slices/authSlice";
+import { clearUser } from "@/redux/slices/userSlice";
+
+
 const Navbar = () => {
+  const dispatch = useDispatch();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
+  const user = useSelector((state)=>state.user.user);
+  console.log(user);
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
@@ -46,7 +55,7 @@ const Navbar = () => {
 
       <div className="hidden md:block">
         <div className="bg-primary text-white px-5 py-2 rounded-lg font-medium hover:opacity-90 transition cursor-pointer">
-          My Profile
+          Hi, {user.fullName}
         </div>
       </div>
 
