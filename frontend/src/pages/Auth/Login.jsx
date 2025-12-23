@@ -4,11 +4,10 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { Link, useNavigate } from "react-router-dom";
-import { loginUser} from "@/services/authService";
+import { loginUser } from "@/services/authService";
 import { useDispatch } from "react-redux";
-import {login} from "../../redux/slices/authSlice.js";
+import { login } from "../../redux/slices/authSlice.js";
 import { setUser } from "../..//redux/slices/userSlice.js";
-
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -68,7 +67,9 @@ const Login = () => {
               onChange={handleChange}
               className="mt-1"
             />
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password" className="mt-4">
+              Password
+            </Label>
             <Input
               type="password"
               name="password"

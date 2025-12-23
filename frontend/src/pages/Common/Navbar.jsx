@@ -2,17 +2,35 @@ import React, { useState, useEffect, use } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { useSelector,useDispatch } from "react-redux";
+import { logoutUser } from "@/services/authService";
 import { logout } from "@/redux/slices/authSlice";
 import { clearUser } from "@/redux/slices/userSlice";
 
 
+
 const Navbar = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   const user = useSelector((state)=>state.user.user);
+  const auth = useSelector((state)=>state.auth);
+  console.log(auth);
   console.log(user);
+  
+  const logoutHandler=async()=>{
+    try{
+      const response=await logoutUser();
+      if(response.data.success){
+        dispatch(logout());
+        dispatch(clearUser());
+        navigate("/login");
+      }
+    }catch(err){
+      console.log(err);
+    }
+  }
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
@@ -53,9 +71,12 @@ const Navbar = () => {
         </li>
       </ul>
 
-      <div className="hidden md:block">
+      <div className="hidden md:flex items-center gap-4">
         <div className="bg-primary text-white px-5 py-2 rounded-lg font-medium hover:opacity-90 transition cursor-pointer">
           Hi, {user.fullName}
+        </div>
+        <div className=" text-primary px-5 py-2 rounded-lg font-medium border border-primary hover:bg-primary hover:text-white transition cursor-pointer">
+          Logout
         </div>
       </div>
 
@@ -82,9 +103,12 @@ const Navbar = () => {
                 Contact Us
               </Link>
 
-              <div className=" bg-primary text-white px-4 py-2 rounded-md text-center cursor-pointer">
+              <button className=" bg-primary text-white px-4 py-2 rounded-md text-center cursor-pointer">
                 My Profile
-              </div>
+              </button>
+              <button className="text-primary px-4 py-2 rounded-md text-center cursor-pointer border border-primary" onClick={()=>logoutHandler()}>
+                Logout
+              </button>
             </div>
           </div>
         )}

@@ -9,10 +9,10 @@ export const loginUser=(data)=>{
     return axiosClient.post(`${USER_API_END_POINT}/login`,data);
 }
 
-export const getCurrentUser=(data)=>{
+export const getCurrentUser=()=>{
     return axiosClient.get(`${USER_API_END_POINT}/current-user`);
 }
 
-export const logoutUser=(data)=>{
+export const logoutUser=()=>{
     return axiosClient.post(`${USER_API_END_POINT}/logout`);
 }
