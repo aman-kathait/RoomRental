@@ -1,14 +1,13 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-
-const RoomCard = () => {
+import { useNavigate } from "react-router-dom";
+const RoomCard = (room) => {
+  const navigate = useNavigate();
   return (
     <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden">
-
-   
       <div className="h-48 w-full">
         <img
-          src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2"
+          src={room.images[0].url}
           alt="Room"
           className="h-full w-full object-cover"
         />
@@ -16,20 +15,21 @@ const RoomCard = () => {
 
       <div className="p-4 space-y-2">
         <h3 className="text-lg font-semibold text-slate-800">
-          Sunrise Residency
+          {room.propertyName}
         </h3>
 
         <p className="text-sm text-slate-500">
-          Dehradun, 248001
+          {room.address.city}, {room.address.state}- {room.address.pincode} 📌 
         </p>
 
         <div className="flex items-center justify-between mt-3">
-          <span className="text-primary font-bold text-lg">
-            ₹8,500 / month
+          <span className="text-primary font-bold text-xm">
+            ₹{room.price}
+            <span className="text-sm font-normal text-slate-500"> /per month </span>
           </span>
         </div>
 
-        <Button className="w-full mt-3">
+        <Button className="w-full mt-3"  onClick={() => navigate(`/get-room/${room._id}`)}>
           Book Now
         </Button>
       </div>

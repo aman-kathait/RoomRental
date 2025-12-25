@@ -7,32 +7,16 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
+import useGetRoomById from "@/hooks/useGetRoomById";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const RoomDetails = () => {
-  // Mock backend data
-  const room = {
-    propertyName: "Modern 2BHK Apartment",
-    description: "Spacious flat with balcony, near metro station.",
-    price: "25000",
-    address: {
-      addressLine1: "Sunrise Residency, Block B",
-      city: "Mumbai",
-      state: "Maharashtra",
-      landmark: "Near Infinity Mall",
-      pincode: "400053",
-    },
-    images: [
-      { url: "https://picsum.photos/id/237/800/500" },
-      { url: "https://picsum.photos/800/500?grayscale" },
-      { url: "https://picsum.photos/800/500?blur=2" },
-    ],
-    amenities: ["WiFi", "Air Conditioning", "Lift", "Parking", "Geyser"],
-  };
-
+  const { roomId } = useParams();
+  useGetRoomById(roomId);
+  const room = useSelector((state) => state.rooms.roomDetails);
   return (
     <div className="mt-24 max-w-7xl mx-auto px-4 mb-20">
-      
-      {/* Image Carousel */}
       <div className="mb-10">
         <Carousel className="w-full">
           <CarouselContent>
@@ -53,10 +37,7 @@ const RoomDetails = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         
-        {/* Left Section */}
         <div className="lg:col-span-8 space-y-6">
-          
-          {/* Title */}
           <div>
             <h1 className="text-3xl font-bold text-slate-900">
               {room.propertyName}
@@ -66,8 +47,6 @@ const RoomDetails = () => {
               {room.address.pincode}
             </p>
           </div>
-
-          {/* Description */}
           <div>
             <h2 className="text-xl font-semibold mb-2">Description</h2>
             <p className="text-slate-600 leading-relaxed">
@@ -75,7 +54,6 @@ const RoomDetails = () => {
             </p>
           </div>
 
-          {/* Amenities */}
           <div>
             <h2 className="text-xl font-semibold mb-3">Amenities</h2>
             <div className="flex flex-wrap gap-3">
@@ -89,8 +67,6 @@ const RoomDetails = () => {
               ))}
             </div>
           </div>
-
-          {/* Address */}
           <div>
             <h2 className="text-xl font-semibold mb-2">Address</h2>
             <p className="text-slate-600">
@@ -100,8 +76,6 @@ const RoomDetails = () => {
             </p>
           </div>
         </div>
-
-        {/* Right Sticky Booking Card */}
         <div className="lg:col-span-4">
           <div className="sticky top-28 bg-white shadow-xl rounded-2xl p-6 space-y-4">
             
@@ -112,7 +86,7 @@ const RoomDetails = () => {
               <p className="text-sm text-slate-500">per month</p>
             </div>
 
-            <Button className="w-full bg-primary text-white rounded-xl py-3 font-semibold hover:bg-primary/80">
+            <Button className="w-full bg-primary text-white rounded-xl py-3 font-semibold hover:bg-primary/80" >
               Book Now
             </Button>
 

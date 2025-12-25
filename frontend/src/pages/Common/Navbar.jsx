@@ -5,6 +5,8 @@ import { useSelector,useDispatch } from "react-redux";
 import { logoutUser } from "@/services/authService";
 import { logout } from "@/redux/slices/authSlice";
 import { clearUser } from "@/redux/slices/userSlice";
+import { LogOut } from 'lucide-react';
+
 
 
 
@@ -16,14 +18,12 @@ const Navbar = () => {
 
   const user = useSelector((state)=>state.user.user);
   const auth = useSelector((state)=>state.auth);
-  console.log(auth);
-  console.log(user);
   
   const logoutHandler=async()=>{
     try{
       const response=await logoutUser();
       if(response.data.success){
-        dispatch(logout());
+        dispatch(logout(response.data.data.accessToken));
         dispatch(clearUser());
         navigate("/login");
       }
@@ -72,10 +72,11 @@ const Navbar = () => {
       </ul>
 
       <div className="hidden md:flex items-center gap-4">
-        <div className="bg-primary text-white px-5 py-2 rounded-lg font-medium hover:opacity-90 transition cursor-pointer">
+        <div className="bg-primary text-white px-5 py-2 rounded-lg font-medium hover:opacity-90 transition cursor-pointer" onClick={()=>navigate("/profile")}>
           Hi, {user.fullName}
         </div>
-        <div className=" text-primary px-5 py-2 rounded-lg font-medium border border-primary hover:bg-primary hover:text-white transition cursor-pointer">
+        <div className=" text-primary px-5 py-2 rounded-lg font-medium border border-primary hover:bg-primary hover:text-white transition cursor-pointer flex items-center gap-2" onClick={()=>logoutHandler()}>
+           <LogOut />
           Logout
         </div>
       </div>
@@ -93,7 +94,7 @@ const Navbar = () => {
               <Link to="/" className="block">
                 Home
               </Link>
-              <Link to="/room" className="block">
+              <Link to="/rooms" className="block">
                 Room
               </Link>
               <Link to="/find-room" className="block">
@@ -103,7 +104,7 @@ const Navbar = () => {
                 Contact Us
               </Link>
 
-              <button className=" bg-primary text-white px-4 py-2 rounded-md text-center cursor-pointer">
+              <button className="block" onClick={()=>navigate("/profile")}>
                 My Profile
               </button>
               <button className="text-primary px-4 py-2 rounded-md text-center cursor-pointer border border-primary" onClick={()=>logoutHandler()}>

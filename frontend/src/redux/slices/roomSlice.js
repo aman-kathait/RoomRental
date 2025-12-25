@@ -1,27 +1,30 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  rooms: [],
-  selectedRoom: null,
+  allRooms: [],
+  roomDetails: null,
 };
 
 const roomSlice = createSlice({
   name: "rooms",
   initialState,
   reducers: {
-    setRooms: (state, action) => {
-      state.rooms = action.payload;
+    setAllRooms: (state, action) => {
+      state.allRooms = action.payload;
     },
-    setSelectedRoom: (state, action) => {
-      state.selectedRoom = action.payload;
+    clearAllRooms: (state) => {
+      state.allRooms = [];
     },
-    clearSelectedRoom: (state) => {
-      state.selectedRoom = null;
+    setRoomDetails: (state, action) => {
+      state.roomDetails = action.payload;
+    },
+    clearRoomDetails: (state) => {
+      state.roomDetails = null;
     },
   },
 });
 
-export const { setRooms, setSelectedRoom, clearSelectedRoom } =
+export const { setAllRooms, clearAllRooms, setRoomDetails, clearRoomDetails } =
   roomSlice.actions;
 
 export default roomSlice.reducer;

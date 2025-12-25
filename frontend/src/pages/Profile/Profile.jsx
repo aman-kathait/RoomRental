@@ -1,20 +1,12 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-
+import { useSelector } from "react-redux";
 const Profile = () => {
-  // Mock user data (from backend)
-  const user = {
-    email: "test2@gmail.com",
-    fullName: "Aman Kathait",
-    contactNumber: "9998887776",
-    role: "landlord",
-  };
-
+  const user = useSelector((state) => state.user.user);
   return (
     <div className="mt-24 max-w-4xl mx-auto px-4 mb-20">
       <div className="bg-white shadow-xl rounded-2xl p-6 sm:p-10">
 
-        {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-10">
           <div>
             <h1 className="text-3xl font-bold text-slate-900">
@@ -29,8 +21,6 @@ const Profile = () => {
             Edit Profile
           </Button>
         </div>
-
-        {/* Profile Details */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
 
           <div>

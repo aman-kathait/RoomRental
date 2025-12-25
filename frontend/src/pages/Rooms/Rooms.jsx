@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { cities } from "@/utils/constants";
 import {
   Select,
@@ -13,10 +13,17 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import RoomCard from "./RoomCard";
+import axios from "axios";
+import useGetAllRooms from "@/hooks/useGetAllRooms";
+import { useSelector } from "react-redux";
 
 const Rooms = () => {
-  const rooms = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  useGetAllRooms();
+  const rooms=useSelector(state=>state.rooms.allRooms);
+  console.log(rooms);
+  
   const [showFilter, setShowFilter] = useState(false);
+
 
   return (
     <div className="mt-24 max-w-7xl mx-auto px-4 mb-20 lg:grid lg:grid-cols-12 lg:gap-6 items-start">
@@ -106,7 +113,7 @@ const Rooms = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
           {rooms.map((room) => (
-            <RoomCard key={room} />
+            <RoomCard key={room._id} {...room} />
           ))}
         </div>
       </main>
