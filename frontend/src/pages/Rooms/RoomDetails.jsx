@@ -15,6 +15,14 @@ const RoomDetails = () => {
   const { roomId } = useParams();
   useGetRoomById(roomId);
   const room = useSelector((state) => state.rooms.roomDetails);
+  if (!room) {
+  return (
+    <div className="mt-24 text-center text-slate-500">
+      Loading room details...
+    </div>
+  );
+}
+
   return (
     <div className="mt-24 max-w-7xl mx-auto px-4 mb-20">
       <div className="mb-10">
