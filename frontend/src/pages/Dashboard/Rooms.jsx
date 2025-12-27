@@ -6,8 +6,13 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import useGetAllRooms from "@/hooks/useGetAllRooms";
+import { useSelector } from "react-redux";
+import {useNavigate} from "react-router-dom"
 const Rooms = () => {
-  const rooms = [1, 2, 3, 4, 5];
+  useGetAllRooms();
+  const navigate=useNavigate();
+  const rooms=useSelector((state)=>state.rooms.allRooms.slice(0,6));
   return (
     <div className="px-6 py-8 md:px-30 md:py-20 bg-[#F1F9FF] ">
       <h1 className="text-[#1E293B] text-xl md:text-[44px] font-bold">
@@ -21,12 +26,12 @@ const Rooms = () => {
           <CarouselContent>
             {rooms.map((room) => {
               return (
-                <CarouselItem className="basis-full sm:basis-1/2 lg:basis-1/3 sm:pl-4">
+                <CarouselItem className="basis-full sm:basis-1/2 lg:basis-1/3 sm:pl-4" key={room._id}>
                   <div className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden sm:m-4  sm:p-4">
                   
                     <div className="relative">
                       <img
-                        src="Image 1.jpg"
+                       src={room.images?.[0]?.url || "/placeholder-room.jpg"}
                         alt="Room"
                         className="h-56 w-full object-cover sm:rounded-2xl"
                       />
@@ -38,26 +43,25 @@ const Rooms = () => {
                  
                     <div className="p-3 sm:p-5 space-y-3">
                       <h2 className="text-lg font-semibold text-slate-900">
-                        Room Name {room}
+                      {room.propertyName}
                       </h2>
 
-                      <p className="text-sm text-slate-500">📍 Example City</p>
+                      <p className="text-sm text-slate-500">📍 {room.address.city}, {room.address.state} - {room.address.pincode}</p>
 
                       <p className="text-sm text-slate-600 line-clamp-2">
-                        Well-furnished room with good ventilation, nearby
-                        markets, and public transport.
+                        {room.description}
                       </p>
 
                       <div className="border-t pt-4 flex items-center justify-between">
                         <p className="text-lg font-bold text-slate-900">
-                          ₹5,500
+                          ₹ {room.price}
                           <span className="text-sm font-normal text-slate-500">
                             {" "}
                             / month
                           </span>
                         </p>
 
-                        <button className="bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition">
+                        <button className="bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition" onClick={() => navigate(`/get-room/${room._id}`)} >
                           Book Now
                         </button>
                       </div>

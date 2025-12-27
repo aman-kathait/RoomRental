@@ -52,7 +52,7 @@ export const getAllRooms = asyncHandler(
     const rooms = await Room.find().populate(
       "owner",
       "name email fullName contactNumber",
-    );
+    ).sort({ createdAt: -1 }) ;
     if (!rooms || rooms.length === 0) {
       throw new ApiError(404, "No rooms found");
     }
