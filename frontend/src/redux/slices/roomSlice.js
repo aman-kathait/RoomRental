@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   allRooms: [],
   roomDetails: null,
+  searchRooms: [],
 };
 
 const roomSlice = createSlice({
@@ -21,10 +22,16 @@ const roomSlice = createSlice({
     clearRoomDetails: (state) => {
       state.roomDetails = null;
     },
+    setSearchRooms:(state,action)=>{
+      state.searchRooms=action.payload;
+    },
+    clearSearchRooms:(state)=>{
+      state.searchRooms=[];
+    },
   },
 });
 
-export const { setAllRooms, clearAllRooms, setRoomDetails, clearRoomDetails } =
+export const { setAllRooms, clearAllRooms, setRoomDetails, clearRoomDetails, setSearchRooms, clearSearchRooms } =
   roomSlice.actions;
 
 export default roomSlice.reducer;

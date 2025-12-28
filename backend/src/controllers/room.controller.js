@@ -160,3 +160,19 @@ export const updateRoomStatus = asyncHandler(async (req, res) => {
 });
 
 export const editRoomImages = asyncHandler(async (req, res) => {});
+
+export const getRoomsBySearch=asyncHandler(async (req, res) => {
+  try {
+    const {search=""}=req.query;
+   const rooms = await Room.find({
+    $or: [
+      { "address.city": { $regex: search, $options: "i" } },
+      { "address.pincode": { $regex: search, $options: "i" } }
+    ],
+    isAvailable: true 
+  }).populate("owner", "fullName email contactNumber");
+    res.json(new ApiResponse(200, { rooms }, "Rooms fetched successfully"));
+  } catch (error) {
+    throw new ApiError(500, "Server Error while searching rooms");
+  }
+});

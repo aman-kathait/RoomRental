@@ -63,9 +63,9 @@ const Navbar = () => {
         <li className="hover:text-primary transition">
           <Link to="/rooms">Room</Link>
         </li>
-        <li className="hover:text-primary transition">
+        {/* <li className="hover:text-primary transition">
           <Link to="/find-room">Find Room</Link>
-        </li>
+        </li> */}
         <li className="hover:text-primary transition">
           <Link to="/#contact">Contact Us</Link>
         </li>
@@ -75,8 +75,8 @@ const Navbar = () => {
         <div className="bg-primary text-white px-5 py-2 rounded-lg font-medium hover:opacity-90 transition cursor-pointer" onClick={()=>navigate("/profile")}>
           Hi, {user.fullName}
         </div>
-        <div className=" text-primary px-5 py-2 rounded-lg font-medium border border-primary hover:bg-primary hover:text-white transition cursor-pointer flex items-center gap-2" onClick={()=>logoutHandler()}>
-           <LogOut />
+        <div className=" text-primary px-3 text-sm py-2 rounded-lg font-medium border border-primary hover:bg-primary hover:text-white transition cursor-pointer flex items-center gap-2" onClick={()=>logoutHandler()}>
+           <LogOut className="h-4" />
           Logout
         </div>
       </div>

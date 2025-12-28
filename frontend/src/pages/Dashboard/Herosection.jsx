@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
-import { getCurrentUser } from "@/services/authService";
+import { useNavigate } from "react-router-dom";
 const Herosection = () => {
+  const [search,setSearch]=useState("");
+  const navigate=useNavigate();
+  const handleSearch=()=>{
+    console.log("Handle Search Clicked",search);
+    if(search.trim()==="") return
+    navigate(`/search-rooms?search=${search}`);
+  };
   return (
     <div className="flex flex-col-reverse md:flex-row md:justify-around md:pt-25 md:px-30 bg-linear-to-b from-[#F1F9FF] via-[#F1F9FF] to-white md:pb-30">
       <div className="md:w-1/2 md:space-y-1">
@@ -32,10 +39,13 @@ const Herosection = () => {
             <Input
               type="text"
               placeholder="Search rooms..."
-              className="w-full text-white pl-4 pr-5 py-6 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 transition"
+              value={search}
+              onChange={(e)=>setSearch(e.target.value)}
+              className="w-full text-black pl-4 pr-5 py-6 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 transition"
             />
             <button
               type="button"
+              onClick={handleSearch}
               className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-primary transition bg-primary/80 rounded-xl p-2"
             >
               <Search size={20} />
