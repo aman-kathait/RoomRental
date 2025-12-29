@@ -2,6 +2,7 @@ import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import authReducer from './slices/authSlice';
 import roomReducer from './slices/roomSlice';
 import userReducer from './slices/userSlice';
+import inquiryReducer from './slices/inquirySlice';
 import {
   persistStore,
   persistReducer,
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
     auth:authReducer,
     rooms:roomReducer,
     user:userReducer,
+    inquiry:inquiryReducer,
 });
 
 const persistConfig = {

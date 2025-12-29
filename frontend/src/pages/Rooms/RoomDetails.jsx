@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Carousel,
   CarouselContent,
@@ -10,18 +10,55 @@ import { Button } from "@/components/ui/button";
 import useGetRoomById from "@/hooks/useGetRoomById";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-
+import { contactOwner, removeContact } from "@/services/inquiryService";
+import useGetAllMyInquiries from "@/hooks/useGetAllMyInquiries";
+import { useDispatch } from "react-redux";
+import { triggerRefresh } from "@/redux/slices/inquirySlice";
 const RoomDetails = () => {
+  useGetAllMyInquiries();
+  const dispatch = useDispatch();
+  const userInquiries = useSelector((state) => state.inquiry.myinquiries);
+  console.log(userInquiries);
   const { roomId } = useParams();
   useGetRoomById(roomId);
   const room = useSelector((state) => state.rooms.roomDetails);
+
+  const inquiryForRoom = room
+    ? userInquiries.find(
+        (inq) => inq.room === room._id || inq.room?._id === room._id
+      )
+    : null;
+
+  const booked = Boolean(inquiryForRoom);
+
   if (!room) {
-  return (
-    <div className="mt-24 text-center text-slate-500">
-      Loading room details...
-    </div>
-  );
-}
+    return (
+      <div className="mt-24 text-center text-slate-500">
+        Loading room details...
+      </div>
+    );
+  }
+  const booking = async (roomId, message) => {
+    try {
+      const response = await contactOwner({ roomId, message });
+      if (response.data.success) {
+        dispatch(triggerRefresh());
+        console.log("Room Booked Successfully");
+      }
+    } catch (error) {
+      console.error("Error booking the room:", error);
+    }
+  };
+
+  const cancelBooking = async (inquiryId) => {
+    try {
+      await removeContact(inquiryId);
+      dispatch(triggerRefresh());
+      console.log("Booking cancelled");
+    } catch (error) {
+      console.error("Error cancelling booking:", error);
+    }
+  };
 
   return (
     <div className="mt-24 max-w-7xl mx-auto px-4 mb-20">
@@ -44,22 +81,18 @@ const RoomDetails = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        
         <div className="lg:col-span-8 space-y-6">
           <div>
             <h1 className="text-3xl font-bold text-slate-900">
               {room.propertyName}
             </h1>
             <p className="text-slate-600 mt-1">
-              {room.address.city}, {room.address.state} –{" "}
-              {room.address.pincode}
+              {room.address.city}, {room.address.state} – {room.address.pincode}
             </p>
           </div>
           <div>
             <h2 className="text-xl font-semibold mb-2">Description</h2>
-            <p className="text-slate-600 leading-relaxed">
-              {room.description}
-            </p>
+            <p className="text-slate-600 leading-relaxed">{room.description}</p>
           </div>
 
           <div>
@@ -79,34 +112,37 @@ const RoomDetails = () => {
             <h2 className="text-xl font-semibold mb-2">Address</h2>
             <p className="text-slate-600">
               {room.address.addressLine1}, {room.address.landmark},{" "}
-              {room.address.city}, {room.address.state} -{" "}
-              {room.address.pincode}
+              {room.address.city}, {room.address.state} - {room.address.pincode}
             </p>
           </div>
         </div>
         <div className="lg:col-span-4">
           <div className="sticky top-28 bg-white shadow-xl rounded-2xl p-6 space-y-4">
-            
             <div>
-              <p className="text-3xl font-bold text-slate-900">
-                ₹{room.price}
-              </p>
+              <p className="text-3xl font-bold text-slate-900">₹{room.price}</p>
               <p className="text-sm text-slate-500">per month</p>
             </div>
-
-            <Button className="w-full bg-primary text-white rounded-xl py-3 font-semibold hover:bg-primary/80" >
-              Book Now
-            </Button>
-
-            <Button
-              variant="outline"
-              className="w-full rounded-xl py-3 font-semibold text-red-600 border-red-200 hover:bg-red-50"
-            >
-              Cancel Booking
-            </Button>
+            {booked ? (
+              <Button
+                variant="outline"
+                className="w-full rounded-xl py-3 font-semibold text-red-600"
+                onClick={() => cancelBooking(inquiryForRoom._id)}
+              >
+                Cancel Booking
+              </Button>
+            ) : (
+              <Button
+                className="w-full bg-primary text-white rounded-xl py-3 font-semibold"
+                onClick={() =>
+                  booking(room._id, "I am interested in this room")
+                }
+              >
+                Book Now
+              </Button>
+            )}
 
             <p className="text-xs text-slate-500 text-center">
-              You can cancel anytime before confirmation
+              You can cancel booking confirmation
             </p>
           </div>
         </div>
