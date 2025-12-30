@@ -7,9 +7,6 @@ import { logout } from "@/redux/slices/authSlice";
 import { clearUser } from "@/redux/slices/userSlice";
 import { LogOut } from 'lucide-react';
 
-
-
-
 const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -72,7 +69,7 @@ const Navbar = () => {
       </ul>
 
       <div className="hidden md:flex items-center gap-4">
-        <div className="bg-primary text-white px-5 py-2 rounded-lg font-medium hover:opacity-90 transition cursor-pointer" onClick={()=>navigate("/profile")}>
+        <div className="bg-primary text-white px-5 py-2 rounded-lg font-medium hover:opacity-90 transition cursor-pointer" onClick={()=>navigate(`/profile/${user._id}`)}>
           Hi, {user.fullName}
         </div>
         <div className=" text-primary px-3 text-sm py-2 rounded-lg font-medium border border-primary hover:bg-primary hover:text-white transition cursor-pointer flex items-center gap-2" onClick={()=>logoutHandler()}>

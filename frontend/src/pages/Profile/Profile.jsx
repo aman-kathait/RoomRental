@@ -1,28 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useSelector } from "react-redux";
+import UpdateProfileDialog from "./UpdateProfileDialog";
 const Profile = () => {
   const user = useSelector((state) => state.user.user);
+  const [open, setOpen] = useState(false);
+  if (!user) {
+    return <div className="mt-24 text-center">Loading profile...</div>;
+  }
   return (
     <div className="mt-24 max-w-4xl mx-auto px-4 mb-20">
       <div className="bg-white shadow-xl rounded-2xl p-6 sm:p-10">
-
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-10">
           <div>
-            <h1 className="text-3xl font-bold text-slate-900">
-              My Profile
-            </h1>
+            <h1 className="text-3xl font-bold text-slate-900">My Profile</h1>
             <p className="text-slate-500 mt-1">
               Manage your personal information
             </p>
           </div>
 
-          <Button className="mt-4 sm:mt-0 bg-primary text-white rounded-xl px-6">
+          <Button
+            onClick={() => setOpen(true)}
+            className="mt-4 sm:mt-0 bg-primary text-white rounded-xl px-6"
+          >
             Edit Profile
           </Button>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-
           <div>
             <p className="text-sm text-slate-500">Full Name</p>
             <p className="text-lg font-medium text-slate-900">
@@ -32,9 +36,7 @@ const Profile = () => {
 
           <div>
             <p className="text-sm text-slate-500">Email</p>
-            <p className="text-lg font-medium text-slate-900">
-              {user.email}
-            </p>
+            <p className="text-lg font-medium text-slate-900">{user.email}</p>
           </div>
 
           <div>
@@ -50,9 +52,10 @@ const Profile = () => {
               {user.role}
             </span>
           </div>
-
         </div>
       </div>
+
+      <UpdateProfileDialog open={open} onOpenChange={setOpen} />
     </div>
   );
 };
