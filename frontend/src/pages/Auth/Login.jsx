@@ -78,8 +78,11 @@ const Login = () => {
               onChange={handleChange}
               className="mt-1"
             />
+            <Link to="/forgot-password" className="text-sm text-blue-600 font-semibold text-right mt-1 block">
+              Forgot your password?
+            </Link>
             {backendErrors.length > 0 && (
-              <div className="mt-3 text-xs md:text-sm text-red-500 space-y-1">
+              <div className="mt-1 text-xs md:text-sm text-red-500 space-y-1">
                 <ul className="list-disc list-inside">
                   {backendErrors.map((err, idx) => (
                     <li key={idx}>{err}</li>

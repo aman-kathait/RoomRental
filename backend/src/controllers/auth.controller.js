@@ -258,6 +258,9 @@ export const forgotPassword=asyncHandler(async(req,res)=>{
     throw new ApiError(400,"Email is required");
   }
   const user=await User.findOne({email});
+  if(!user){
+    throw new ApiError(404,"User with this email does not exist");
+  }
   const otp=Math.floor(100000 + Math.random() * 900000).toString();
   await UserOtp.deleteMany({ userId: user._id });
   await UserOtp.create({
