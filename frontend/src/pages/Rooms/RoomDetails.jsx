@@ -18,7 +18,6 @@ const RoomDetails = () => {
   useGetAllMyInquiries();
   const dispatch = useDispatch();
   const userInquiries = useSelector((state) => state.inquiry.myinquiries);
-  console.log(userInquiries);
   const { roomId } = useParams();
   useGetRoomById(roomId);
   const room = useSelector((state) => state.rooms.roomDetails);

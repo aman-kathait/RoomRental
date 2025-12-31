@@ -13,7 +13,7 @@ const inquirySlice = createSlice({
       state.myinquiries = action.payload;
     },
     triggerRefresh: (state) => {
-      state.refresh = !state.refresh; // 👈 toggle
+      state.refresh = !state.refresh;
     },
     clearInquiries: (state) => initialState,
   },

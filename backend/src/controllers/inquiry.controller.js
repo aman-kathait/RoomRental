@@ -57,7 +57,7 @@ export const getMyInquiriesLandlord=asyncHandler(async(req,res)=>{
 
 export const getMyInquiriesTenant=asyncHandler(async(req,res)=>{
     const userId=req.user._id;
-    const inquiries=await RoomInquiry.find({user:userId}).populate('room', 'propertyName ');
+    const inquiries=await RoomInquiry.find({user:userId}).populate('room', 'propertyName ', ).populate('owner', 'fullName email contactNumber');
 
     if(!inquiries){
         throw new ApiError(404,"You have no inquiries");
