@@ -1,11 +1,11 @@
 import React, { useState, useEffect, use } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "@/services/authService";
 import { logout } from "@/redux/slices/authSlice";
 import { clearUser } from "@/redux/slices/userSlice";
-import { LogOut } from 'lucide-react';
+import { LogOut } from "lucide-react";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -13,21 +13,21 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  const user = useSelector((state)=>state.user.user);
-  const auth = useSelector((state)=>state.auth);
-  
-  const logoutHandler=async()=>{
-    try{
-      const response=await logoutUser();
-      if(response.data.success){
+  const user = useSelector((state) => state.user.user);
+  const auth = useSelector((state) => state.auth);
+
+  const logoutHandler = async () => {
+    try {
+      const response = await logoutUser();
+      if (response.data.success) {
         dispatch(logout(response.data.data.accessToken));
         dispatch(clearUser());
         navigate("/login");
       }
-    }catch(err){
+    } catch (err) {
       console.log(err);
     }
-  }
+  };
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
@@ -53,27 +53,50 @@ const Navbar = () => {
         <span className="text-black">Rent</span>Easy
       </div>
 
-      <ul className="hidden md:flex items-center gap-10 text-gray-900 font-medium">
-        <li className="hover:text-primary transition">
-          <Link to="/">Home</Link>
-        </li>
-        <li className="hover:text-primary transition">
-          <Link to="/rooms">Room</Link>
-        </li>
-        {/* <li className="hover:text-primary transition">
+      {user && user.role === "tenant" ? (
+        <ul className="hidden md:flex items-center gap-10 text-gray-900 font-medium">
+          <li className="hover:text-primary transition">
+            <Link to="/">Home</Link>
+          </li>
+          <li className="hover:text-primary transition">
+            <Link to="/rooms">Room</Link>
+          </li>
+          {/* <li className="hover:text-primary transition">
           <Link to="/find-room">Find Room</Link>
         </li> */}
-        <li className="hover:text-primary transition">
-          <Link to="/#contact">Contact Us</Link>
+          <li className="hover:text-primary transition">
+            <Link to="/#contact">Contact Us</Link>
+          </li>
+        </ul>
+      ) : (
+        <ul className="hidden md:flex items-center gap-10 text-gray-900 font-medium">
+          <li className="hover:text-primary transition">
+            <Link to="/">Home</Link>
+          </li>
+          <li className="hover:text-primary transition">
+            <Link to="/add-room">Add Room</Link>
+          </li>
+          <li className="hover:text-primary transition">
+          <Link to="/manage-room">Manage Rooms</Link>
         </li>
-      </ul>
+          <li className="hover:text-primary transition">
+            <Link to="/#contact">Contact Us</Link>
+          </li>
+        </ul>
+      )}
 
       <div className="hidden md:flex items-center gap-4">
-        <div className="bg-primary text-white px-5 py-2 rounded-lg font-medium hover:opacity-90 transition cursor-pointer" onClick={()=>navigate(`/profile/${user._id}`)}>
+        <div
+          className="bg-primary text-white px-5 py-2 rounded-lg font-medium hover:opacity-90 transition cursor-pointer"
+          onClick={() => navigate(`/profile/${user._id}`)}
+        >
           Hi, {user.fullName}
         </div>
-        <div className=" text-primary px-3 text-sm py-2 rounded-lg font-medium border border-primary hover:bg-primary hover:text-white transition cursor-pointer flex items-center gap-2" onClick={()=>logoutHandler()}>
-           <LogOut className="h-4" />
+        <div
+          className=" text-primary px-3 text-sm py-2 rounded-lg font-medium border border-primary hover:bg-primary hover:text-white transition cursor-pointer flex items-center gap-2"
+          onClick={() => logoutHandler()}
+        >
+          <LogOut className="h-4" />
           Logout
         </div>
       </div>
@@ -88,23 +111,45 @@ const Navbar = () => {
         {isMenuOpen && (
           <div className="absolute top-12 left-0 w-full bg-purple-50 shadow-md p-4 z-10">
             <div className="md:hidden mt-4 space-y-3 text-gray-700 justify-center items-center flex flex-col">
-              <Link to="/" className="block">
-                Home
-              </Link>
-              <Link to="/rooms" className="block">
-                Room
-              </Link>
-              <Link to="/find-room" className="block">
-                Find Room
-              </Link>
-              <Link to="/contact-us" className="block">
-                Contact Us
-              </Link>
+              {user && user.role === "tenant" ? (
+                <>
+                  <Link to="/" className="block">
+                    Home
+                  </Link>
+                  <Link to="/rooms" className="block">
+                    Room
+                  </Link>
+                  <Link to="/find-room" className="block">
+                    Find Room
+                  </Link>
+                  <Link to="/contact-us" className="block">
+                    Contact Us
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link to="/" className="block">
+                    Home
+                  </Link>
+                  <Link to="/rooms" className="block">
+                    Add Room
+                  </Link>
+                  <Link to="/find-room" className="block">
+                    Manage Rooms
+                  </Link>
+                  <Link to="/contact-us" className="block">
+                    Contact Us
+                  </Link>
+                </>
+              )}
 
-              <button className="block" onClick={()=>navigate("/profile")}>
+              <button className="block" onClick={() => navigate("/profile")}>
                 My Profile
               </button>
-              <button className="text-primary px-4 py-2 rounded-md text-center cursor-pointer border border-primary" onClick={()=>logoutHandler()}>
+              <button
+                className="text-primary px-4 py-2 rounded-md text-center cursor-pointer border border-primary"
+                onClick={() => logoutHandler()}
+              >
                 Logout
               </button>
             </div>

@@ -9,6 +9,8 @@ import RoomDetails from "./pages/Rooms/RoomDetails";
 import Profile from "./pages/Profile/Profile";
 import { ToastContainer } from "react-toastify";
 import ForgotPassword from "./pages/Auth/ForgotPassword";
+import AddRoom from "./pages/Admin/AddRoom";
+import ManageRoom from "./pages/Admin/ManageRoom";
 function App() {
   return (
     <>
@@ -28,6 +30,8 @@ function App() {
           <Route path="/search-rooms" element={<FindRoom />} />
           <Route path="/get-room/:roomId" element={<RoomDetails />} />
           <Route path="/profile/:userId" element={<Profile />} />
+          <Route path="/add-room" element={<AddRoom />} />
+          <Route path="/manage-room" element={<ManageRoom />} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
