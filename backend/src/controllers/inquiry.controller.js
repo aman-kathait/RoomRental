@@ -4,87 +4,151 @@ import { asyncHandler } from "../utils/async-handler.js";
 import RoomInquiry from "../models/roominquiry.models.js";
 import User from "../models/user.models.js";
 import Room from "../models/room.models.js";
+import { sendEmail } from "../utils/sendMail.js";
+import mailGenerator from "../utils/mailGen.js";
+export const contact = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+  const user = await User.findById(userId);
+  if (!user) throw new ApiError(404, "User not found");
 
-export const contact=asyncHandler(async(req,res)=>{
-    const userId=req.user._id;
-    const user=await User.findById(userId);
+  const { roomId, message } = req.body;
+  const room = await Room.findById(roomId);
+  if (!room) throw new ApiError(404, "Room not found");
 
-    if(!user){
-        throw new ApiError(404,"User not found");
-    }
-    const {roomId,message}=req.body;
-    const room=await Room.findById(roomId);
+  let inquiry = await RoomInquiry.create({
+    room: roomId,
+    user: userId,
+    owner: room.owner,
+    message,
+  });
 
-    if(!room){
-        throw new ApiError(404,"Room not found");
-    }
+  inquiry = await RoomInquiry.findById(inquiry._id)
+    .populate("user", "fullName email contactNumber")
+    .populate("room", "propertyName price")
+    .populate("owner", "fullName email contactNumber");
 
-    const inquiry = await RoomInquiry.create({
-      room: roomId,
-      user: userId,
-      owner: room.owner,
-      message,
-    });
-    res.status(201).json(new ApiResponse(201,{inquiry},"Inquiry sent successfully"));
+  const mailBody = {
+    body: {
+      name: inquiry.owner.fullName,
+      intro: `You have a new inquiry for your room: ${room.propertyName}.`,
+      table: {
+        data: [
+          { "Tenant Name": user.fullName },
+          { "Tenant Email": user.email },
+          { "Tenant Contact Number": user.contactNumber },
+          { "Message": message },
+          { "Room Price": room.price },
+        ],
+      },
+      action: {
+        instructions: "Click below to reply to the tenant:",
+        button: {
+          color: "#22BC66",
+          text: "Reply to Tenant",
+          link: `mailto:${user.email}?subject=Inquiry about ${room.propertyName}`,
+        },
+      },
+      outro: "Please respond to the tenant as soon as possible.",
+    },
+  };
+
+  const mailgenContent = mailGenerator.generate(mailBody);
+
+  await sendEmail({
+    email: inquiry.owner.email,
+    subject: `New Inquiry for ${room.propertyName}`,
+    mailgenContent,
+  });
+
+  res
+    .status(201)
+    .json(new ApiResponse(201, { inquiry }, "Inquiry sent successfully"));
 });
 
-export const removeContact=asyncHandler(async(req,res)=>{
-    const userId=req.user._id;
-    const {inquiryId}=req.body;
-    const inquiry=await RoomInquiry.findById(inquiryId);
 
-    if(!inquiry){
-        throw new ApiError(404,"Inquiry not found");
-    }
-    if(inquiry.user.toString()!==userId.toString()){
-        throw new ApiError(403,"You are not authorized to delete this inquiry");
-    }
-    await RoomInquiry.findByIdAndDelete(inquiryId);
-    res.status(200).json(new ApiResponse(200,null,"Inquiry deleted successfully"));
+export const removeContact = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+  const { inquiryId } = req.body;
+  const inquiry = await RoomInquiry.findById(inquiryId);
+
+  if (!inquiry) {
+    throw new ApiError(404, "Inquiry not found");
+  }
+  if (inquiry.user.toString() !== userId.toString()) {
+    throw new ApiError(403, "You are not authorized to delete this inquiry");
+  }
+  await RoomInquiry.findByIdAndDelete(inquiryId);
+  res
+    .status(200)
+    .json(new ApiResponse(200, null, "Inquiry deleted successfully"));
 });
 
-export const getMyInquiriesLandlord=asyncHandler(async(req,res)=>{
-    const userId=req.user._id;
+export const getMyInquiriesLandlord = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
 
-    const inquiries=await RoomInquiry.find({owner:userId}).populate('user','fullName email contactNumber').populate('room', 'propertyName price');
-    
-    if(inquiries.length===0){
-        throw new ApiError(404,"No inquiries found for this user");
-    }
+  const inquiries = await RoomInquiry.find({ owner: userId })
+    .populate("user", "fullName email contactNumber")
+    .populate("room", "propertyName price");
 
-    res.status(200).json(new ApiResponse(200,{inquiries},"Inquiries fetched successfully"));
+  if (inquiries.length === 0) {
+    throw new ApiError(404, "No inquiries found for this user");
+  }
+
+  res
+    .status(200)
+    .json(
+      new ApiResponse(200, { inquiries }, "Inquiries fetched successfully"),
+    );
 });
 
-export const getMyInquiriesTenant=asyncHandler(async(req,res)=>{
-    const userId=req.user._id;
-    const inquiries=await RoomInquiry.find({user:userId}).populate('room', 'propertyName ', ).populate('owner', 'fullName email contactNumber');
+export const getMyInquiriesTenant = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+  const inquiries = await RoomInquiry.find({ user: userId })
+    .populate("room", "propertyName ")
+    .populate("owner", "fullName email contactNumber");
 
-    if(!inquiries){
-        throw new ApiError(404,"You have no inquiries");
-    }
+  if (!inquiries) {
+    throw new ApiError(404, "You have no inquiries");
+  }
 
-    res.status(200).json(new ApiResponse(200,{inquiries},"Inquiries fetched successfully"));
+  res
+    .status(200)
+    .json(
+      new ApiResponse(200, { inquiries }, "Inquiries fetched successfully"),
+    );
 });
 
-export const updateInquiryStatus=asyncHandler(async(req,res)=>{
-    const userId=req.user._id;
-    const {inquiryId,status}=req.body;
-    const inquiry=await RoomInquiry.findById(inquiryId);
+export const updateInquiryStatus = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+  const { inquiryId, status } = req.body;
+  const inquiry = await RoomInquiry.findById(inquiryId);
 
-    const validStatuses = ["pending", "confirmed", "rejected", "cancelled"];
-    if (!validStatuses.includes(status)) {
-        throw new ApiError(400, "Invalid status value");
-    }
+  const validStatuses = ["pending", "confirmed", "rejected", "cancelled"];
+  if (!validStatuses.includes(status)) {
+    throw new ApiError(400, "Invalid status value");
+  }
 
-    if(!inquiry){
-        throw new ApiError(404,"Inquiry not found");
-    }
-    if(inquiry.owner.toString()!==userId.toString()){
-        throw new ApiError(403,"You are not authorized to update this inquiry");
-    }
-    const updatedInquiry=await RoomInquiry.findByIdAndUpdate(inquiryId, {$set:{status}}, {new:true});
-    if (!updatedInquiry) {
-        throw new ApiError(404, "Inquiry not found");
-    }
-     res.status(200).json(new ApiResponse(200, updatedInquiry, "Inquiry status updated successfully"));
+  if (!inquiry) {
+    throw new ApiError(404, "Inquiry not found");
+  }
+  if (inquiry.owner.toString() !== userId.toString()) {
+    throw new ApiError(403, "You are not authorized to update this inquiry");
+  }
+  const updatedInquiry = await RoomInquiry.findByIdAndUpdate(
+    inquiryId,
+    { $set: { status } },
+    { new: true },
+  );
+  if (!updatedInquiry) {
+    throw new ApiError(404, "Inquiry not found");
+  }
+  res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        updatedInquiry,
+        "Inquiry status updated successfully",
+      ),
+    );
 });

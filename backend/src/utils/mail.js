@@ -6,13 +6,10 @@ const sendEmail = async (options) => {
     theme: "default",
     product: {
       name: "Room Rental",
-      link: "http://localhost:3000/",
+      link: "http://localhost:5173/",
     },
   });
-
-  const emailTextual = mailGenerator.generatePlaintext(
-    options.mailgenContent,
-  );
+  const emailTextual = mailGenerator.generatePlaintext(options.mailgenContent);
   const emailHTML = mailGenerator.generate(options.mailgenContent);
 
   const transporter = nodemailer.createTransport({
@@ -25,7 +22,7 @@ const sendEmail = async (options) => {
   });
 
   const mail = {
-    from: "amankathait2003@gmail.com",
+    from: "amankathat011@gmail.com",
     to: options.email,
     subject: options.subject,
     text: emailTextual,
@@ -61,7 +58,7 @@ const forgotPasswordContent = (username, otp) => {
     body: {
       name: username,
       intro: "You have requested to reset your password.",
-       table: {
+      table: {
         data: [
           {
             "Your OTP": otp,
@@ -74,5 +71,8 @@ const forgotPasswordContent = (username, otp) => {
     },
   };
 };
+
+  
+
 
 export { emailVerificationContent, forgotPasswordContent, sendEmail };
