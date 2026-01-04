@@ -14,7 +14,6 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
 
   const user = useSelector((state) => state.user.user);
-  const auth = useSelector((state) => state.auth);
 
   const logoutHandler = async () => {
     try {
@@ -77,11 +76,8 @@ const Navbar = () => {
             <Link to="/add-room">Add Room</Link>
           </li>
           <li className="hover:text-primary transition">
-          <Link to="/manage-room">Manage Rooms</Link>
+          <Link to="/manage-rooms">Manage Rooms</Link>
         </li>
-          <li className="hover:text-primary transition">
-            <Link to="/#contact">Contact Us</Link>
-          </li>
         </ul>
       )}
 
@@ -134,7 +130,7 @@ const Navbar = () => {
                   <Link to="/rooms" className="block">
                     Add Room
                   </Link>
-                  <Link to="/find-room" className="block">
+                  <Link to="/manage-rooms" className="block">
                     Manage Rooms
                   </Link>
                   <Link to="/contact-us" className="block">

@@ -1,6 +1,7 @@
 export const BASE_URL="http://localhost:8000"
 export const USER_API_END_POINT = `${BASE_URL}/api/v1/auth`;
 export const ROOM_END_POINT_USER=`${BASE_URL}/api/v1/rooms`;
+export const ROOM_END_POINT_ADMIN=`${BASE_URL}/api/v1/rooms`;
 export const ROOM_INQUIRY_END_POINTS=`${BASE_URL}/api/v1/inquiries`;
 export const cities = [
   "Almora",

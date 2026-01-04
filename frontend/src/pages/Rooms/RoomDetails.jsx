@@ -14,6 +14,8 @@ import { contactOwner, removeContact } from "@/services/inquiryService";
 import useGetAllMyInquiries from "@/hooks/useGetAllMyInquiries";
 import { useDispatch } from "react-redux";
 import { triggerRefresh } from "@/redux/slices/inquirySlice";
+import { User, Phone } from "lucide-react";
+
 const RoomDetails = () => {
   useGetAllMyInquiries();
   const dispatch = useDispatch();
@@ -61,8 +63,8 @@ const RoomDetails = () => {
 
   return (
     <div className="mt-24 max-w-7xl mx-auto px-4 mb-20">
-      <div className="mb-10">
-        <Carousel className="w-full">
+      <div className="mb-10 gap-6">
+        <Carousel className="">
           <CarouselContent>
             {room.images.map((img, idx) => (
               <CarouselItem key={idx}>
@@ -143,6 +145,33 @@ const RoomDetails = () => {
             <p className="text-xs text-slate-500 text-center">
               You can cancel booking confirmation
             </p>
+            <div className="mt-6 sm:mt-0 flex items-center">
+              <div className="w-full bg-white border border-gray-200 rounded-2xl p-6 shadow-md">
+                <h3 className="text-xl font-semibold mb-6">Owner Details</h3>
+
+                <div className="flex items-center gap-4 mb-5">
+                  <div className="p-3 rounded-full bg-gray-100">
+                    <User className="w-5 h-5 text-gray-600" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">Owner Name</p>
+                    <p className="font-medium text-gray-900">
+                      {room.owner.fullName}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <div className="p-3 rounded-full bg-gray-100">
+                    <Phone className="w-5 h-5 text-gray-600" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">Email: </p>
+                    <p className="font-medium text-gray-900">{room.owner.email}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

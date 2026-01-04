@@ -1,9 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { triggerRefresh } from "./inquirySlice";
 
 const initialState = {
   allRooms: [],
   roomDetails: null,
   searchRooms: [],
+  refresh: false,
 };
 
 const roomSlice = createSlice({
@@ -28,10 +30,13 @@ const roomSlice = createSlice({
     clearSearchRooms:(state)=>{
       state.searchRooms=[];
     },
+    triggerRefreshRooms: (state) => {
+      state.refresh = !state.refresh;
+    },
   },
 });
 
-export const { setAllRooms, clearAllRooms, setRoomDetails, clearRoomDetails, setSearchRooms, clearSearchRooms } =
+export const { setAllRooms, clearAllRooms, setRoomDetails, clearRoomDetails, setSearchRooms, clearSearchRooms, triggerRefreshRooms } =
   roomSlice.actions;
 
 export default roomSlice.reducer;

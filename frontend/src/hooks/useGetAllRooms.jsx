@@ -3,10 +3,10 @@ import { useDispatch } from "react-redux";
 import axios from "axios";
 import { setAllRooms } from "../redux/slices/roomSlice";
 import { ROOM_END_POINT_USER } from "@/utils/constants";
-
+import { useSelector } from "react-redux";
 const useGetAllRooms = () => {
     const dispatch = useDispatch();
-
+    const refresh = useSelector((state) => state.rooms.refresh);
     useEffect(() => {
         const fetchRooms = async () => {
             try {
@@ -22,6 +22,6 @@ const useGetAllRooms = () => {
         };
 
         fetchRooms();
-    }, [dispatch]);
+    }, [dispatch, refresh]);
 };
 export default useGetAllRooms;

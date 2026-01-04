@@ -13,14 +13,12 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import RoomCard from "./RoomCard";
-import axios from "axios";
 import useGetAllRooms from "@/hooks/useGetAllRooms";
 import { useSelector } from "react-redux";
 
 const Rooms = () => {
   useGetAllRooms();
   const rooms = useSelector((state) => state.rooms.allRooms);
-  console.log(rooms);
 
   const [tempFilters, setTempFilters] = useState({
     city: "",
@@ -196,7 +194,7 @@ const Rooms = () => {
             </p>
           ) : (
             applyFilter(rooms).map((room) => (
-              <RoomCard key={room._id} {...room} />
+              <RoomCard key={room._id} {...room} title="Book Now"  />
             ))
           )}
         </div>
