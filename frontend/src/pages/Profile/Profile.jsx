@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useSelector } from "react-redux";
 import UpdateProfileDialog from "./UpdateProfileDialog";
 import InquiriesTable from "./InquiriesTable";
+import InquiriesTableAdmin from "./InquiriesTableAdmin";
 const Profile = () => {
   const user = useSelector((state) => state.user.user);
   const [open, setOpen] = useState(false);
@@ -68,7 +69,8 @@ const Profile = () => {
       </div>
       
       <div className="border-t pt-10">
-        <InquiriesTable user={user} />
+        {user && user.role==="landlord" ? <InquiriesTableAdmin user={user} /> :<InquiriesTable user={user} />}
+      
       </div>
 
       <UpdateProfileDialog open={open} onOpenChange={setOpen} />

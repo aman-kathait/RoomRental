@@ -8,28 +8,27 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import useGetAllMyInquiries from "@/hooks/useGetAllMyInquiries";
+import useGetAllMyInquiriesAdmin from "@/hooks/useGetAllMyInquiriesAdmin";
 import { useSelector } from "react-redux";
 import { removeContact } from "@/services/inquiryService";
 import { useDispatch } from "react-redux";
 import { triggerRefresh } from "@/redux/slices/inquirySlice";
 import { toast } from "react-toastify";
-import { Trash2 } from 'lucide-react';
-import InquiriesTableAdmin from "./InquiriesTableAdmin";
-const InquiriesTable = ({ user }) => {
+import { SquarePen } from 'lucide-react';
+import { useState } from "react";
+import UpdateInquiryStatus from "./UpdateInquiryStatus";
+const InquiriesTableAdmin = ({ user }) => {
   const dispatch = useDispatch();
-  useGetAllMyInquiries();
-  const myInquiries = useSelector((state) => state.inquiry.myinquiries);
+  useGetAllMyInquiriesAdmin();
+  const myInquiries = useSelector((state) => state.inquiry.myinquiriesadmin);
+  const [open,setOpen]=useState(false);  
+  const [selectedInquiryId, setSelectedInquiryId] = useState(null);
   if (!myInquiries) {
     return (
       <div className="mt-24 text-center text-slate-500">
         Loading inquiries...
       </div>
     );
-  }
-  
-  if(user && user.role==="landlord" ){
-    return (<InquiriesTableAdmin user={user} />);
   }
   if (myInquiries.length === 0) {
     return (
@@ -51,15 +50,17 @@ const InquiriesTable = ({ user }) => {
     }
   };
   return (
+    <>
     <Table>
       <TableCaption>A list of your recent invoices </TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead>S No</TableHead>
           <TableHead>Property Name</TableHead>
-          <TableHead>Owner Name</TableHead>
+          <TableHead>User Name</TableHead>
+          <TableHead>Contact Number</TableHead>
           <TableHead>Status</TableHead>
-          <TableHead className="text-center">Action</TableHead>
+          <TableHead className="">Action</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -68,34 +69,42 @@ const InquiriesTable = ({ user }) => {
             <TableRow key={inquiry._id}>
               <TableCell className="font-medium">{index + 1}</TableCell>
               <TableCell>{inquiry.room.propertyName}</TableCell>
-              <TableCell>{inquiry.owner?.fullName}</TableCell>
+              <TableCell>{inquiry.user?.fullName}</TableCell>
+              <TableCell>{inquiry.user?.contactNumber}</TableCell>
               <TableCell
                 className={
                   inquiry.status == "confirmed"
                     ? "bg-green-500 inline-block  px-2 py-1 rounded-sm mt-2 text-white"
                     : inquiry.status === "pending"
                     ? "bg-yellow-500 inline-block px-2 py-1 rounded-sm mt-2 text-white"
-                    : inquiry.status === "rejected"
+                    : inquiry.status === "cancelled"
                     ? "bg-red-500 inline-block px-2 py-1 rounded-sm mt-2 text-white"
                     : ""
                 }
               >
                 {inquiry.status}
               </TableCell>
-              <TableCell className="text-center">
+              <TableCell className="">
                 <button
-                  className=""
-                  onClick={() => cancelBooking(inquiry._id)}
+                  className="flex items-center justify-center gap-2"
+                  onClick={() => {setOpen(true); setSelectedInquiryId(inquiry._id);}}
                 >
-                  <Trash2 className="h-4 w-4 text-red-500" />
+                  <SquarePen className="h-4 w-4 text-blue-500" /> Edit
                 </button>
               </TableCell>
             </TableRow>
           );
         })}
+       
       </TableBody>
     </Table>
+    <div>
+     <UpdateInquiryStatus inquiryId={selectedInquiryId} open={open} onOpenChange={setOpen} />
+    </div>
+    </>
+    
+    
   );
 };
 
-export default InquiriesTable;
+export default InquiriesTableAdmin;

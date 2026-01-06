@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   myinquiries: [],
+  myinquiriesadmin:[],
   refresh: false,
 };
 
@@ -12,6 +13,9 @@ const inquirySlice = createSlice({
     setInquiries: (state, action) => {
       state.myinquiries = action.payload;
     },
+    setInquiriesAdmin: (state, action) => {
+      state.myinquiriesadmin = action.payload;
+    },
     triggerRefresh: (state) => {
       state.refresh = !state.refresh;
     },
@@ -19,7 +23,7 @@ const inquirySlice = createSlice({
   },
 });
 
-export const { setInquiries, triggerRefresh, clearInquiries } =
+export const { setInquiries, setInquiriesAdmin, triggerRefresh, clearInquiries } =
   inquirySlice.actions;
 
 export default inquirySlice.reducer;

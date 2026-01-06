@@ -8,3 +8,11 @@ export const contactOwner=(data)=>{
 export const removeContact=(inquiryId)=>{
     return axiosClient.delete(`${ROOM_INQUIRY_END_POINTS}/removecontact`,{ data: { inquiryId } });
 }
+
+export const removeInquiry=(inquiryId)=>{
+    return axiosClient.delete(`${ROOM_INQUIRY_END_POINTS}/removecontact`,{ data: { inquiryId } });
+}
+
+export const updateInquiryStatus=(inquiryId,status)=>{
+    return axiosClient.patch(`${ROOM_INQUIRY_END_POINTS}/update-inquiry-status`,{inquiryId,status});
+}

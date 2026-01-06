@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { Link, useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
-import axiosClient from "@/utils/axiosClient";
 import { registerUser } from "@/services/authService"; 
 const Signup = () => {
   const navigate = useNavigate();
