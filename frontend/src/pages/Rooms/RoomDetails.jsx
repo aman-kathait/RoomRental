@@ -15,7 +15,7 @@ import useGetAllMyInquiries from "@/hooks/useGetAllMyInquiries";
 import { useDispatch } from "react-redux";
 import { triggerRefresh } from "@/redux/slices/inquirySlice";
 import { User, Phone } from "lucide-react";
-
+import { Spinner } from "@/components/ui/spinner";
 const RoomDetails = () => {
   useGetAllMyInquiries();
   const dispatch = useDispatch();
@@ -23,7 +23,7 @@ const RoomDetails = () => {
   const { roomId } = useParams();
   useGetRoomById(roomId);
   const room = useSelector((state) => state.rooms.roomDetails);
-
+  const [loading, setLoading] = useState(false);
   const inquiryForRoom = room
     ? userInquiries.find(
         (inq) => inq.room === room._id || inq.room?._id === room._id
@@ -40,6 +40,7 @@ const RoomDetails = () => {
     );
   }
   const booking = async (roomId, message) => {
+    setLoading(true);
     try {
       const response = await contactOwner({ roomId, message });
       if (response.data.success) {
@@ -48,16 +49,21 @@ const RoomDetails = () => {
       }
     } catch (error) {
       console.error("Error booking the room:", error);
+    }finally{
+      setLoading(false);
     }
   };
 
   const cancelBooking = async (inquiryId) => {
+    setLoading(true);
     try {
       await removeContact(inquiryId);
       dispatch(triggerRefresh());
       console.log("Booking cancelled");
     } catch (error) {
       console.error("Error cancelling booking:", error);
+    }finally{
+      setLoading(false);
     }
   };
 
@@ -123,8 +129,14 @@ const RoomDetails = () => {
               <p className="text-3xl font-bold text-slate-900">₹{room.price}</p>
               <p className="text-sm text-slate-500">per month</p>
             </div>
+            {loading && (
+              <div className="flex justify-center mt-2 text-blue-600">
+                <Spinner className="mr-2 h-5 w-5" /> Please wait...
+              </div>
+            )}
             {booked ? (
               <Button
+                disabled={loading}
                 variant="outline"
                 className="w-full rounded-xl py-3 font-semibold text-red-600"
                 onClick={() => cancelBooking(inquiryForRoom._id)}
@@ -133,6 +145,7 @@ const RoomDetails = () => {
               </Button>
             ) : (
               <Button
+              disabled={loading}
                 className="w-full bg-primary text-white rounded-xl py-3 font-semibold"
                 onClick={() =>
                   booking(room._id, "I am interested in this room")
@@ -141,7 +154,7 @@ const RoomDetails = () => {
                 Book Now
               </Button>
             )}
-
+            
             <p className="text-xs text-slate-500 text-center">
               You can cancel booking confirmation
             </p>
