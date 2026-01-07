@@ -1,12 +1,19 @@
-import React,{ useEffect} from "react";
+import React,{ useState} from "react";
 import { useSelector } from "react-redux";
 import RoomCard from "../Rooms/RoomCard";
 import useGetAllRooms from "@/hooks/useGetAllRooms";
+import EditRoom from "./EditRoom";
+import { useDispatch } from "react-redux";
+import { clearRoomDetails } from "@/redux/slices/roomSlice";
+import useGetRoomById from "@/hooks/useGetRoomById";
 const ManageRoom = () => {
-  
+  const dispatch = useDispatch();
   const rooms = useSelector((state) => state.rooms.allRooms);
   const user = useSelector((state) => state.user.user);
+  const[selectedRoomId,setSelectedRoomId]=useState(null);
   useGetAllRooms();
+  const[open,setOpen]=useState(false);
+  
   return (
     <div className="mt-35 sm:px-30 px-10">
       <h1 className="text-2xl sm:text-4xl text-slate-800 font-bold">
@@ -25,11 +32,17 @@ const ManageRoom = () => {
                   {...room}
                   title="Edit Room"
                   owner="yes"
+                  onEdit={() => {
+                    setSelectedRoomId(room._id);
+                    setOpen(true);
+                  }}
                 />
+
               );
             }
           })}
       </div>
+      <EditRoom open={open} onOpenChange={setOpen} roomId={selectedRoomId} />
     </div>
   );
 };

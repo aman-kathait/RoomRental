@@ -2,8 +2,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { setRoomDetails } from "@/redux/slices/roomSlice";
-import { ROOM_END_POINT_USER } from "@/utils/constants";
-
+import { ROOM_END_POINT_USER } from "@/utils/constants"
 const useGetRoomById=(roomId)=>{
     const dispatch=useDispatch();
     useEffect(()=>{

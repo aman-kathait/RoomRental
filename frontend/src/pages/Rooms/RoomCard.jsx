@@ -5,7 +5,7 @@ import { removeRoom } from "@/services/roomService";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { triggerRefreshRooms } from "@/redux/slices/roomSlice";
-const RoomCard = ({ title,owner, ...room }) => {
+const RoomCard = ({ title,owner, onEdit, ...room }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -53,7 +53,7 @@ const RoomCard = ({ title,owner, ...room }) => {
         {title &&
           (title === "Edit Room" ? (
             <>
-            <Button className="w-full mt-3">Edit Room</Button>
+            <Button className="w-full mt-3" onClick={onEdit}>Edit Room</Button>
             </>
           ) : (
             <Button

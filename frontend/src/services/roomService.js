@@ -11,3 +11,10 @@ export const addRoom=(roomData)=>{
         }
     });
 }
+
+export const updateRoom=(roomId,roomData)=>{
+    return axiosClient.put(`${ROOM_END_POINT_ADMIN}/edit-room/${roomId}`,roomData,
+    );
+
+}
+
