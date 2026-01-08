@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route,Navigate } from "react-router-dom";
 import Login from "../src/pages/Auth/Login";
 import Register from "../src/pages/Auth/Signup";
 import Dashboard from "./pages/Dashboard/Dashboard";
@@ -12,6 +12,7 @@ import ForgotPassword from "./pages/Auth/ForgotPassword";
 import AddRoom from "./pages/Admin/AddRoom";
 import ManageRoom from "./pages/Admin/ManageRoom";
 import AddRoomForm from "./pages/Admin/AddRoomForm";
+import RequireAuth from "./routes/RequireAuth";
 function App() {
   return (
     <>
@@ -25,7 +26,13 @@ function App() {
         theme="dark"
       />
       <Routes>
-        <Route element={<Layout />}>
+        <Route
+          element={
+            <RequireAuth>
+              <Layout />
+            </RequireAuth>
+          }
+        >
           <Route path="/" element={<Dashboard />} />
           <Route path="/rooms" element={<Rooms />} />
           <Route path="/search-rooms" element={<FindRoom />} />
@@ -38,6 +45,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </>
   );

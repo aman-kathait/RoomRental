@@ -90,10 +90,6 @@ export const getMyInquiriesLandlord = asyncHandler(async (req, res) => {
     .populate("user", "fullName email contactNumber")
     .populate("room", "propertyName price");
 
-  if (inquiries.length === 0) {
-    throw new ApiError(404, "No inquiries found for this user");
-  }
-
   res
     .status(200)
     .json(

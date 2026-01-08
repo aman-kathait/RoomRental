@@ -1,4 +1,4 @@
-import React,{ useState} from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import RoomCard from "../Rooms/RoomCard";
 import useGetAllRooms from "@/hooks/useGetAllRooms";
@@ -10,10 +10,10 @@ const ManageRoom = () => {
   const dispatch = useDispatch();
   const rooms = useSelector((state) => state.rooms.allRooms);
   const user = useSelector((state) => state.user.user);
-  const[selectedRoomId,setSelectedRoomId]=useState(null);
+  const [selectedRoomId, setSelectedRoomId] = useState(null);
   useGetAllRooms();
-  const[open,setOpen]=useState(false);
-  
+  const [open, setOpen] = useState(false);
+
   return (
     <div className="mt-35 sm:px-30 px-10">
       <h1 className="text-2xl sm:text-4xl text-slate-800 font-bold">
@@ -23,10 +23,11 @@ const ManageRoom = () => {
         Here you can manage all the rooms you have listed.
       </p>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        {rooms &&
-          rooms.map((room) => {
-            if (room.owner._id === user._id) {
-              return (
+        {rooms && rooms.length > 0 ? (
+          rooms.filter((room) => room.owner._id === user._id).length > 0 ? (
+            rooms
+              .filter((room) => room.owner._id === user._id)
+              .map((room) => (
                 <RoomCard
                   key={room._id}
                   {...room}
@@ -37,10 +38,13 @@ const ManageRoom = () => {
                     setOpen(true);
                   }}
                 />
-
-              );
-            }
-          })}
+              ))
+          ) : (
+            <p className=" text-red-500">No rooms available.</p>
+          )
+        ) : (
+          <p className=" text-red-400 ">You have not added any rooms yet.</p>
+        )}
       </div>
       <EditRoom open={open} onOpenChange={setOpen} roomId={selectedRoomId} />
     </div>

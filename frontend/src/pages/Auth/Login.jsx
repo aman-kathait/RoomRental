@@ -8,12 +8,13 @@ import { loginUser } from "@/services/authService";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/slices/authSlice.js";
 import { setUser } from "../..//redux/slices/userSlice.js";
-
+import { Eye, EyeOff } from "lucide-react";
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [backendErrors, setBackendErrors] = useState([]);
+  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -70,15 +71,28 @@ const Login = () => {
             <Label htmlFor="password" className="mt-4">
               Password
             </Label>
-            <Input
-              type="password"
-              name="password"
-              placeholder="Enter your password"
-              value={formData.password}
-              onChange={handleChange}
-              className="mt-1"
-            />
-            <Link to="/forgot-password" className="text-sm text-blue-600 font-semibold text-right mt-1 block">
+            <div className="relative mt-1">
+              <Input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="Enter your password"
+                value={formData.password}
+                onChange={handleChange}
+                className="pr-10"
+              />
+
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
+            <Link
+              to="/forgot-password"
+              className="text-sm text-blue-600 font-semibold text-right mt-1 block"
+            >
               Forgot your password?
             </Link>
             {backendErrors.length > 0 && (

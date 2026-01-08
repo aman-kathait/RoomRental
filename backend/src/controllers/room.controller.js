@@ -2,8 +2,7 @@ import { ApiResponse } from "../utils/api-response.js";
 import { ApiError } from "../utils/api-error.js";
 import { asyncHandler } from "../utils/async-handler.js";
 import Room from "../models/room.models.js";
-import User from "../models/user.models.js";
-
+import RoomInquiry from "../models/roominquiry.models.js";
 export const addRoom = asyncHandler(async (req, res) => {
   const { propertyName, description, price, address, amenities } = req.body;
 
@@ -136,6 +135,7 @@ export const deleteRoomById = asyncHandler(async (req, res) => {
   if (room.owner.toString() !== req.user._id.toString()) {
     throw new ApiError(403, "Not authorized to delete this room");
   }
+  await RoomInquiry.deleteMany({ room: roomId });
   await Room.findByIdAndDelete(roomId);
 
   res.status(200).json(new ApiResponse(200, {}, "Room Deleted Successfully"));

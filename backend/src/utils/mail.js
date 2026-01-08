@@ -72,7 +72,5 @@ const forgotPasswordContent = (username, otp) => {
   };
 };
 
-  
-
 
 export { emailVerificationContent, forgotPasswordContent, sendEmail };

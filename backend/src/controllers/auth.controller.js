@@ -57,7 +57,7 @@ export const registerUser = asyncHandler(async (req, res) => {
 
   user.emailVerificationToken = hashedToken;
   user.emailVerificationExpiry = tokenExpiry;
-
+  const verificationUrl=`${req.protocol}://${req.get("host")}/api/v1/auth/verify-email/${unHashedToken}`;
   await user.save();
 
   // await sendEmail({
@@ -65,7 +65,7 @@ export const registerUser = asyncHandler(async (req, res) => {
   //   subject: "Verify your Email",
   //   mailgenContent: emailVerificationContent(
   //     user.fullName,
-  //     `${req.protocol}://${req.get("host")}/api/v1/auth/verify-email/${unHashedToken}`,
+  //     verificationUrl
   //   ),
   // });
 

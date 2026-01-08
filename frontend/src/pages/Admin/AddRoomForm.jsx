@@ -26,7 +26,7 @@ const INDIAN_STATES = [
 ];
 
 const AddRoomForm = () => {
-    const {navigate}=useNavigate();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -118,11 +118,13 @@ const AddRoomForm = () => {
         setImages([]);
         navigate('/manage-rooms');
       } else {
-        toast.error("Failed to add room");
+         toast.error(response.data?.message || "Failed to add room");
       }
     } catch (error) {
+       toast.error(error.response?.data?.message || "Something went wrong. Please try again.");
+    }
+    finally{
       setLoading(false);
-      toast.error("Something went wrong");
     }
   };
 
