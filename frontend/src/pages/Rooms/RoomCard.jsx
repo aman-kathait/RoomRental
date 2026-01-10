@@ -36,7 +36,7 @@ const RoomCard = ({ title,owner, onEdit, ...room }) => {
           {room.propertyName}
         </h3>
 
-        <p className="text-sm text-slate-500">
+        <p className="text-sm text-slate-500 line-clamp-1">
           {room.address.city}, {room.address.state}- {room.address.pincode} 📌
         </p>
 

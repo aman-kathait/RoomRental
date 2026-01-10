@@ -48,7 +48,7 @@ const Rooms = () => {
 
                       <p className="text-sm text-slate-500">📍 {room.address.city}, {room.address.state} - {room.address.pincode}</p>
 
-                      <p className="text-sm text-slate-600 line-clamp-2">
+                      <p className="text-sm text-slate-600 line-clamp-1 ">
                         {room.description}
                       </p>
 
