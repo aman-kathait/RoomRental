@@ -45,6 +45,7 @@ const RoomDetails = () => {
       const response = await contactOwner({ roomId, message });
       if (response.data.success) {
         dispatch(triggerRefresh());
+        console.log("Room Booked Successfully");
       }
     } catch (error) {
       console.error("Error booking the room:", error);
@@ -58,6 +59,7 @@ const RoomDetails = () => {
     try {
       await removeContact(inquiryId);
       dispatch(triggerRefresh());
+      console.log("Booking cancelled");
     } catch (error) {
       console.error("Error cancelling booking:", error);
     }finally{

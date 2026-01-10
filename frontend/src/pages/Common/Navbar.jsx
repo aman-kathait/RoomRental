@@ -24,7 +24,7 @@ const Navbar = () => {
         navigate("/login");
       }
     } catch (err) {
-      console.error(err);
+      console.log(err);
     }
   };
   useEffect(() => {

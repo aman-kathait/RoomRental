@@ -13,6 +13,7 @@ const FindRoom = () => {
   const [searchParams] = useSearchParams();
   const search = searchParams.get("search") || "";
   const [loading, setLoading] = useState(false);
+  console.log("Search Params in FindRoom:", search);
   const dispatch = useDispatch();
 
   const rooms = useSelector((state) => state.rooms.searchRooms);
