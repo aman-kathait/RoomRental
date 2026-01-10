@@ -37,7 +37,6 @@ const Login = () => {
         dispatch(login(response.data.data.accessToken));
         dispatch(setUser(response.data.data.user));
         navigate("/");
-        console.log(response.data);
       }
     } catch (messages) {
       setBackendErrors(messages);

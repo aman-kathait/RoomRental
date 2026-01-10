@@ -7,7 +7,6 @@ const Herosection = () => {
   const [search,setSearch]=useState("");
   const navigate=useNavigate();
   const handleSearch=()=>{
-    console.log("Handle Search Clicked",search);
     if(search.trim()==="") return
     navigate(`/search-rooms?search=${search}`);
   };

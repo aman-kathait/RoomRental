@@ -56,7 +56,6 @@ const EditRoom = ({ open, onOpenChange, roomId }) => {
 
     try {
         setLoading(true);
-      console.log(formData);
       const response = await updateRoom(roomId, formData);
       if (response.data.statusCode === 200) {
         toast.success("Room updated successfully 🎉");

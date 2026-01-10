@@ -67,7 +67,6 @@ const Rooms = () => {
         }
       }
 
-      console.log(appliedFilters);
       return true;
     });
   };
