@@ -12,7 +12,6 @@ import jwt from "jsonwebtoken";
 import { sendEmail } from "../utils/sendMail.js";
 import mailGenerator from "../utils/mailGen.js";
 
-
 const generateAccessandRefreshToken = async (userId) => {
   try {
     const user = await User.findById(userId);
@@ -57,7 +56,7 @@ export const registerUser = asyncHandler(async (req, res) => {
 
   user.emailVerificationToken = hashedToken;
   user.emailVerificationExpiry = tokenExpiry;
-  const verificationUrl=`${req.protocol}://${req.get("host")}/api/v1/auth/verify-email/${unHashedToken}`;
+  const verificationUrl = `${req.protocol}://${req.get("host")}/api/v1/auth/verify-email/${unHashedToken}`;
   await user.save();
 
   // await sendEmail({
@@ -129,20 +128,23 @@ export const loginUser = asyncHandler(async (req, res) => {
 });
 
 export const logoutUser = asyncHandler(async (req, res) => {
-  await User.findByIdAndUpdate(
-    req.user._id,
-    { $set: { refreshToken: "" } },
-    { new: true },
-  );
+  if (req.user?._id) {
+    await User.findByIdAndUpdate(req.user._id, {
+      $set: { refreshToken: "" },
+    });
+  }
 
-  const options = {
+  const cookieOptions = {
     httpOnly: true,
     secure: true,
+    sameSite: "none",
   };
+
+  res.clearCookie("accessToken", cookieOptions);
+  res.clearCookie("refreshToken", cookieOptions);
+
   return res
     .status(200)
-    .clearCookie("accessToken", options)
-    .clearCookie("refreshToken", options)
     .json(new ApiResponse(200, {}, "User logged out successfully"));
 });
 
