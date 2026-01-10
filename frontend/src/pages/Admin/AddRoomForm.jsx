@@ -26,7 +26,7 @@ const INDIAN_STATES = [
 ];
 
 const AddRoomForm = () => {
-  const navigate = useNavigate();
+  const navigate =  useNavigate();
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
