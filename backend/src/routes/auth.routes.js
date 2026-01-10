@@ -15,7 +15,7 @@ router.route("/verify-otp").post(verifyForgotPasswordOtp);
 router.route("/reset-password").post(resetPasswordValidator,validate,resetPassword);
 
 //secured route
-router.route('/logout').post(logoutUser);
+router.route('/logout').post(verifyJWT, logoutUser);
 router.route("/current-user").get(verifyJWT,getCurretUser);
 router.route("/change-password").post(verifyJWT,userChangeCurrentPasswordValidator, validate,changePassword);
 router.route("/resend-verification-email").post(verifyJWT, resendEmailVerification);
