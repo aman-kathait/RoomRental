@@ -46,20 +46,23 @@ export const addRoom = asyncHandler(async (req, res) => {
     .json(new ApiResponse(201, { room }, "Room added successfully"));
 });
 
-export const getAllRooms = asyncHandler(
-  asyncHandler(async (req, res) => {
-    const rooms = await Room.find().populate(
-      "owner",
-      "name email fullName contactNumber",
-    ).sort({ createdAt: -1 }) ;
-    if (!rooms || rooms.length === 0) {
-      throw new ApiError(404, "No rooms found");
-    }
-    res
-      .status(200)
-      .json(new ApiResponse(200, { rooms }, "Rooms fetched successfully"));
-  }),
-);
+export const getAllRooms = asyncHandler(async (req, res) => {
+  const rooms = await Room.find()
+    .populate("owner", "name email fullName contactNumber")
+    .sort({ createdAt: -1 });
+  if (!rooms || rooms.length === 0) {
+    throw new ApiError(404, "No rooms found");
+  }
+  res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        { rooms: rooms || [] },
+        "Rooms fetched successfully",
+      ),
+    );
+});
 
 export const getMyRooms = asyncHandler(async (req, res) => {
   const ownerId = req.user?._id;
@@ -161,16 +164,16 @@ export const updateRoomStatus = asyncHandler(async (req, res) => {
 
 export const editRoomImages = asyncHandler(async (req, res) => {});
 
-export const getRoomsBySearch=asyncHandler(async (req, res) => {
+export const getRoomsBySearch = asyncHandler(async (req, res) => {
   try {
-    const {search=""}=req.query;
-   const rooms = await Room.find({
-    $or: [
-      { "address.city": { $regex: search, $options: "i" } },
-      { "address.pincode": { $regex: search, $options: "i" } }
-    ],
-    isAvailable: true 
-  }).populate("owner", "fullName email contactNumber");
+    const { search = "" } = req.query;
+    const rooms = await Room.find({
+      $or: [
+        { "address.city": { $regex: search, $options: "i" } },
+        { "address.pincode": { $regex: search, $options: "i" } },
+      ],
+      isAvailable: true,
+    }).populate("owner", "fullName email contactNumber");
     res.json(new ApiResponse(200, { rooms }, "Rooms fetched successfully"));
   } catch (error) {
     throw new ApiError(500, "Server Error while searching rooms");
