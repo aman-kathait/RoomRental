@@ -27,8 +27,5 @@ app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/inquiries",inquiryRouter);
 app.use("/api/v1/healthcheck", healthCheckRouter);
 
-app.get("/", (req, res) => {
-  res.send("Welcome to Room Rental Application");
-});
 app.use(errorMiddleware);
 export default app;
