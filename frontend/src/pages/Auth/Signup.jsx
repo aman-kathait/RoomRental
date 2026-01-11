@@ -35,7 +35,6 @@ const Signup = () => {
       if (response.data.success) {
         navigate("/login");
       }
-      console.log(response.data);
     } catch (messages) {
       setBackendErrors(messages);
     } finally {
