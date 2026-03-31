@@ -4,28 +4,32 @@ import { asyncHandler } from "../utils/async-handler.js";
 import jwt from "jsonwebtoken";
 
 
-export const verifyJWT=asyncHandler(async(req,res,next)=>{
-    const token=req.cookies?.accessToken || req.headers?.("Authorization")?.replace("Bearer ","");
+export const verifyJWT = asyncHandler(async (req, res, next) => {
 
-    if(!token){
-        throw new ApiError(401,"Unauthorized access, token missing");
+    const token =
+        req.cookies?.accessToken ||
+        req.headers?.authorization?.replace("Bearer ", "");
+
+    if (!token) {
+        throw new ApiError(401, "Unauthorized access, token missing");
     }
 
-    try{
-        const decodedToken=jwt.verify(token,process.env.ACCESS_TOKEN_SECRET);
+    try {
+        const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
-        const user=await User.findById(decodedToken?._id).select("-password -refreshToken -emailVerificationToken -emailVerificationExpiry");
+        const user = await User.findById(decodedToken?._id).select(
+            "-password -refreshToken -emailVerificationToken -emailVerificationExpiry",
+        );
 
-        if(!user){
-            throw new ApiError(401,"Unauthorized access, user not found");
+        if (!user) {
+            throw new ApiError(401, "Unauthorized access, user not found");
         }
 
-        req.user=user;
+        req.user = user;
         next();
-    }catch (error) {
-        throw new ApiError(401,"Unauthorized access, invalid token");
+    } catch (error) {
+        throw new ApiError(401, "Unauthorized access, invalid token");
     }
-
 });
 
 export const isLandlord=asyncHandler(async(req,res,next)=>{

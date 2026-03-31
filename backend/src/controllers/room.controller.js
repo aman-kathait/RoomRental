@@ -46,19 +46,23 @@ export const addRoom = asyncHandler(async (req, res) => {
     .json(new ApiResponse(201, { room }, "Room added successfully"));
 });
 
-export const getAllRooms = asyncHandler(
-  asyncHandler(async (req, res) => {
-    const rooms = await Room.find().populate(
+export const getAllRooms = asyncHandler(async (req, res) => {
+  const page=parseInt(req.query.page) || 1;
+  const limit=parseInt(req.query.limit) || 3;
+  const skip = (page - 1) * limit;
+  const totalRooms = await Room.countDocuments();
+
+  const rooms = await Room.find().populate(
       "owner",
       "name email fullName contactNumber",
-    ).sort({ createdAt: -1 }) ;
+    ).sort({ createdAt: -1 }).skip(skip).limit(limit);
     if (!rooms || rooms.length === 0) {
       throw new ApiError(404, "No rooms found");
     }
     res
       .status(200)
-      .json(new ApiResponse(200, { rooms }, "Rooms fetched successfully"));
-  }),
+      .json(new ApiResponse(200, { rooms,pagination:{totalRooms, currentPage:page, totalPages: Math.ceil(totalRooms / limit) } }, "Rooms fetched successfully"));
+  }
 );
 
 export const getMyRooms = asyncHandler(async (req, res) => {
