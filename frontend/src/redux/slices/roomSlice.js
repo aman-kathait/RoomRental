@@ -3,6 +3,7 @@ import { triggerRefresh } from "./inquirySlice";
 
 const initialState = {
   allRooms: [],
+  pagination:{},
   roomDetails: null,
   searchRooms: [],
   refresh: false,
@@ -14,6 +15,9 @@ const roomSlice = createSlice({
   reducers: {
     setAllRooms: (state, action) => {
       state.allRooms = action.payload;
+    },
+    setPagination:(state,action)=>{
+      state.pagination=action.payload;
     },
     clearAllRooms: (state) => {
       state.allRooms = [];
@@ -36,7 +40,7 @@ const roomSlice = createSlice({
   },
 });
 
-export const { setAllRooms, clearAllRooms, setRoomDetails, clearRoomDetails, setSearchRooms, clearSearchRooms, triggerRefreshRooms } =
+export const { setAllRooms,setPagination, clearAllRooms, setRoomDetails, clearRoomDetails, setSearchRooms, clearSearchRooms, triggerRefreshRooms } =
   roomSlice.actions;
 
 export default roomSlice.reducer;

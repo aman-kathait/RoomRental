@@ -17,9 +17,10 @@ import useGetAllRooms from "@/hooks/useGetAllRooms";
 import { useSelector } from "react-redux";
 
 const Rooms = () => {
-  useGetAllRooms();
+  const [currentPage, setCurrentPage] = useState(1);
+  useGetAllRooms(currentPage);
   const rooms = useSelector((state) => state.rooms.allRooms);
-
+  const pagination = useSelector((state) => state.rooms.pagination);
   const [tempFilters, setTempFilters] = useState({
     city: "",
     priceRange: "",
@@ -70,7 +71,12 @@ const Rooms = () => {
     });
   };
   const [showFilter, setShowFilter] = useState(false);
-
+  useEffect(() => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+}, [currentPage]);
   return (
     <div className="mt-24 max-w-7xl mx-auto px-4 mb-20 lg:grid lg:grid-cols-12 lg:gap-6 items-start">
       <aside className="hidden lg:block col-span-3 sticky top-24 h-fit">
@@ -150,7 +156,9 @@ const Rooms = () => {
           <div className="space-y-2">
             <button
               className="w-full bg-primary text-white rounded-xl px-4 py-3 font-semibold hover:bg-primary/90 transition"
-              onClick={() => setAppliedFilters(tempFilters)}
+              onClick={() => {setAppliedFilters(tempFilters)
+                setCurrentPage(1)
+              }}
             >
               Apply Filters
             </button>
@@ -195,6 +203,17 @@ const Rooms = () => {
               <RoomCard key={room._id} {...room} title="Book Now"  />
             ))
           )}
+          <div className="flex justify-center items-center col-span-full mt-4 space-x-4 bg-grey-100 p-4 rounded-lg">
+            <button onClick={()=>{setCurrentPage((prev) => prev>1? prev-1: prev)}} className={`bg-blue-400 text-white p-2 rounded-xl ${currentPage===1 ? "bg-gray-300 cursor-not-allowed" : "hover:bg-blue-600"}`}>
+              Prev
+            </button>
+            <div>
+              Page: {currentPage}
+            </div>
+            <button onClick={() => setCurrentPage((prev) => prev < pagination.totalPages ? prev + 1 : prev)} className={`bg-blue-500 text-white p-2 rounded-xl ${currentPage===pagination.totalPages ? "bg-gray-500 cursor-not-allowed" : "hover:bg-blue-600"}`}>
+              Next
+            </button>
+          </div>
         </div>
       </main>
 
